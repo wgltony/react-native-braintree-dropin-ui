@@ -128,7 +128,7 @@ For the API, see the [Flow typings][5].
 ### Basic
 
 ```javascript
-import BraintreeDropIn from 'react-native-braintree-payments-drop-in';
+import BraintreeDropIn from 'react-native-braintree-dropin-ui';
 
 BraintreeDropIn.show({
 	clientToken: 'token',
@@ -153,7 +153,7 @@ BraintreeDropIn.show({
 ### 3D Secure
 
 ```javascript
-import BraintreeDropIn from 'react-native-braintree-payments-drop-in';
+import BraintreeDropIn from 'react-native-braintree-dropin-ui';
 
 BraintreeDropIn.show({
   clientToken: 'token',
