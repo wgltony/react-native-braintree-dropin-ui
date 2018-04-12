@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ViewAnimator
+        android:id="@+id/bt_view_animator"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <Button
+            android:id="@+id/bt_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bt_blue"
+            android:textColor="@color/bt_white"/>
+
+        <ProgressBar
+            android:id="@+id/bt_animated_button_loading_indicator"
+            android:layout_width="@dimen/bt_progress_bar_diameter"
+            android:layout_height="@dimen/bt_progress_bar_diameter"
+            android:layout_gravity="center"/>
+
+    </ViewAnimator>
+
+</merge>
