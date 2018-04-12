@@ -1,0 +1,22 @@
+{
+  "name": "react-native-braintree-dropin-ui",
+  "version": "1.0.0",
+  "description": "> React Native integration of Braintree Drop-in",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wgltony/react-native-braintree-dropin-ui.git"
+  },
+  "keywords": [],
+  "author": "tony0130 <wgltony@hotmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wgltony/react-native-braintree-dropin-ui/issues"
+  },
+  "homepage": "https://github.com/wgltony/react-native-braintree-dropin-ui#readme"
+}

@@ -1,4 +1,4 @@
-# react-native-braintree-payments-drop-in
+# react-native-braintree-dropin-ui
 
 > React Native integration of Braintree Drop-in
 
