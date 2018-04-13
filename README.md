@@ -25,13 +25,21 @@ In your `Podfile`, add:
 ```
 pod 'Braintree'
 pod 'BraintreeDropIn'
+
+# comment the next line to disable Apple pay
 pod 'Braintree/Apple-Pay'
+
+# comment the next line to disable PayPal
 pod 'Braintree/PayPal'
+
+# comment the next line to disable Venmo
 pod 'Braintree/Venmo'
+
+# Data collector for Braintree Advanced Fraud Tools 
 pod 'Braintree/DataCollector'
 
-  # uncomment the next line to support credit card scanning
-  pod 'CardIO'
+# comment the next line to disable credit card scanning
+pod 'CardIO'
 
 ```
 
@@ -43,6 +51,10 @@ pod repo update # optional and can be very long
 pod install
 ```
 
+#### Apple Pay
+
+If you've included the Apple Pay pod or framework in your project, Drop-in will show Apple Pay as a payment option as long as you've completed the [Apple Pay integration][6] and the customer's [device and card type are supported][7].
+
 #### Android specific
 
 Add in your `app/build.gradle`:
@@ -50,8 +62,33 @@ Add in your `app/build.gradle`:
 ```
 dependencies {
 ...
+    implementation project(':react-native-braintree-dropin-ui')
     implementation "io.card:android-sdk:5.+"
     implementation 'com.braintreepayments.api:data-collector:2.+'
+    implementation 'com.google.android.gms:play-services-wallet:11.4.0'
+```
+
+
+Add in your `AndroidManifest.xml`:
+
+```
+    <!-- Enables the Google Pay API -->
+    <meta-data 
+        android:name="com.google.android.gms.wallet.api.enabled" 
+        android:value="true"/>
+```
+
+Add in your `MainApplication.java`:
+
+```
+  import tech.power.RNBraintreeDropIn.RNBraintreeDropInPackage;
+
+
+  return Arrays.<ReactPackage>asList(
+             ... ...
+             new RNBraintreeDropInPackage()  // <------ add here
+         );
+
 ```
 
 ### Configuration
@@ -132,13 +169,13 @@ import BraintreeDropIn from 'react-native-braintree-dropin-ui';
 
 BraintreeDropIn.show({
 	clientToken: 'token',
-        merchantIdentifier: 'applePayMerchantIdentifier',    
-        countryCode: 'US',    //apple pay setting
-        currencyCode: 'USD',   //apple pay setting
-        merchantName: 'Your Merchant Name for Apple Pay',
-        orderTotal:'Total Price',
-        googlePay: true,
-        applePay: true,
+  merchantIdentifier: 'applePayMerchantIdentifier',    
+  countryCode: 'US',    //apple pay setting
+  currencyCode: 'USD',   //apple pay setting
+  merchantName: 'Your Merchant Name for Apple Pay',
+  orderTotal:'Total Price',
+  googlePay: true,
+  applePay: true,
 })
 .then(result => console.log(result))
 .catch((error) => {
@@ -160,6 +197,13 @@ BraintreeDropIn.show({
   threeDSecure: {
     amount: 1.0,
   },
+  merchantIdentifier: 'applePayMerchantIdentifier',    
+  countryCode: 'US',    //apple pay setting
+  currencyCode: 'USD',   //apple pay setting
+  merchantName: 'Your Merchant Name for Apple Pay',
+  orderTotal:'Total Price',
+  googlePay: true,
+  applePay: true,
 })
 .then(result => console.log(result))
 .catch((error) => {
@@ -177,3 +221,5 @@ BraintreeDropIn.show({
 [3]:	https://github.com/braintree/braintree-android-drop-in
 [4]:	https://developers.braintreepayments.com/guides/client-sdk/setup/android/v2#browser-switch-setup
 [5]:	./index.js.flow
+[6]:  https://developers.braintreepayments.com/guides/apple-pay/configuration/ios/v4
+[7]:  https://articles.braintreepayments.com/guides/payment-methods/apple-pay#compatibility

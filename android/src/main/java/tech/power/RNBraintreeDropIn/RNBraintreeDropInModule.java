@@ -1,4 +1,4 @@
-package tech.bam.RNBraintreeDropIn;
+package tech.power.RNBraintreeDropIn;
 
 import android.app.Activity;
 import android.content.Intent;
