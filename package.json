@@ -3,7 +3,9 @@
   "version": "1.0.3",
   "description": "> React Native integration of Braintree Drop-in IOS V4 ANDROID V2 (Apple Pay &Android Pay Enabled)",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "npm": "^6.5.0"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
