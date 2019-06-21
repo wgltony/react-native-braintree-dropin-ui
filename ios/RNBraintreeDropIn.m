@@ -40,7 +40,9 @@ RCT_REMAP_METHOD(show,
         self.deviceDataCollector = deviceDataCollector;
     }];
 
-    
+    if([options[@"vaultManager"] boolValue]){
+        request.vaultManager = YES;
+    }
 
     if([options[@"applePay"] boolValue]){
         self.braintreeClient = [[BTAPIClient alloc] initWithAuthorization:clientToken];

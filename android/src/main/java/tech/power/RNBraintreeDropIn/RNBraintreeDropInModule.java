@@ -50,6 +50,10 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
 
     DropInRequest dropInRequest = new DropInRequest().clientToken(options.getString("clientToken"));
 
+    if(options.getBoolean("vaultManager")) {
+      dropInRequest.vaultManager(true);
+    }
+
     dropInRequest.collectDeviceData(true);
 
     if(options.getBoolean("googlePay")){
