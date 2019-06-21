@@ -176,6 +176,7 @@ BraintreeDropIn.show({
   orderTotal:'Total Price',
   googlePay: true,
   applePay: true,
+  vaultManager: true,
 })
 .then(result => console.log(result))
 .catch((error) => {
@@ -204,6 +205,7 @@ BraintreeDropIn.show({
   orderTotal:'Total Price',
   googlePay: true,
   applePay: true,
+  vaultManager: true,
 })
 .then(result => console.log(result))
 .catch((error) => {
