@@ -47,20 +47,26 @@ RCT_REMAP_METHOD(show,
 
     if([options[@"applePay"] boolValue]){
         self.braintreeClient = [[BTAPIClient alloc] initWithAuthorization:clientToken];
-
-        self.paymentRequest = [[PKPaymentRequest alloc] init];
-        self.paymentRequest.merchantIdentifier = options[@"merchantIdentifier"];
-        self.paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
-        self.paymentRequest.countryCode = options[@"countryCode"];
-        self.paymentRequest.currencyCode = options[@"currencyCode"];
-        self.paymentRequest.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkDiscover, PKPaymentNetworkChinaUnionPay];
-        self.paymentRequest.paymentSummaryItems =
+        BTApplePayClient *applePayClient = [[BTApplePayClient alloc] initWithAPIClient:self.apiClient];
+        [applePayClient paymentRequest:^(PKPaymentRequest * _Nullable paymentRequest), NSError * _Nullable error) {
+            if(error) {
+                completion(nil, error);
+                return;
+            }
+            paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
+            paymentRequest.merchantIdentifier = options[@"merchantIdentifier"];
+            paymentRequest.countryCode = options[@"countryCode"];
+            paymentRequest.currencyCode = options[@"currencyCode"];
+            paymentRequest.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkDiscover, PKPaymentNetworkChinaUnionPay];
+            paymentRequest.paymentSummaryItems =
             @[
                 [PKPaymentSummaryItem summaryItemWithLabel:options[@"merchantName"] amount:[NSDecimalNumber decimalNumberWithString:options[@"orderTotal"]]]
             ];
+        }];
 
-        self.viewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest: self.paymentRequest];
+        self.viewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:paymentRequest];
         self.viewController.delegate = self;
+        [self presentViewController:self.viewController animated:YES completion:nil]
     }else{
         request.applePayDisabled = YES;
     }
