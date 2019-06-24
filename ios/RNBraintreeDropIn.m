@@ -52,6 +52,7 @@ RCT_REMAP_METHOD(show,
         NSDecimalNumber* orderTotal = options[@"orderTotal"];
         if(!merchantIdentifier || !countryCode || !currencyCode || !merchantName || !orderTotal){
             reject(@"MISSING_OPTIONS", @"Not all required Apple Pay options were provided", nil);
+            return;
         }
         self.braintreeClient = [[BTAPIClient alloc] initWithAuthorization:clientToken];
 
