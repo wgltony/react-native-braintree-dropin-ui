@@ -66,7 +66,7 @@ RCT_REMAP_METHOD(show,
 
         self.viewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:paymentRequest];
         self.viewController.delegate = self;
-        [self.reactRoot presentViewController:self.viewController animated:YES completion:nil]
+        [self presentViewController:self.viewController animated:YES completion:nil]
     }else{
         request.applePayDisabled = YES;
     }
