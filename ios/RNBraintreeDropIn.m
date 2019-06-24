@@ -45,6 +45,9 @@ RCT_REMAP_METHOD(show,
     }
 
     if([options[@"applePay"] boolValue]){
+        if(!([options objectForKey:@"merchantIdentifier"]) || !([options objectForKey:@"countryCode"]) || !([options objectForKey:@"currencyCode"]) || !([options objectForKey:@"merchantName"]) || !([options objectForKey:@"orderTotal"])){
+            reject(@"MISSING_OPTIONS", @"Not all required Apple Pay options were provided", nil);
+        }
         self.braintreeClient = [[BTAPIClient alloc] initWithAuthorization:clientToken];
 
         self.paymentRequest = [[PKPaymentRequest alloc] init];
