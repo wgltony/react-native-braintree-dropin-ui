@@ -49,7 +49,7 @@ RCT_REMAP_METHOD(show,
         NSString* countryCode = options[@"countryCode"];
         NSString* currencyCode = options[@"currencyCode"];
         NSString* merchantName = options[@"merchantName"];
-        NSDecimalNumber* orderTotal = options[@"orderTotal"]
+        NSDecimalNumber* orderTotal = options[@"orderTotal"];
         if(!merchantIdentifier || !countryCode || !currencyCode || !merchantName || !orderTotal){
             reject(@"MISSING_OPTIONS", @"Not all required Apple Pay options were provided", nil);
         }
