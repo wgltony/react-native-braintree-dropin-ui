@@ -45,20 +45,25 @@ RCT_REMAP_METHOD(show,
     }
 
     if([options[@"applePay"] boolValue]){
-        if(!([options objectForKey:@"merchantIdentifier"]) || !([options objectForKey:@"countryCode"]) || !([options objectForKey:@"currencyCode"]) || !([options objectForKey:@"merchantName"]) || !([options objectForKey:@"orderTotal"])){
+        NSString* merchantIdentifier = options[@"merchantIdentifier"];
+        NSString* countryCode = options[@"countryCode"];
+        NSString* currencyCode = options[@"currencyCode"];
+        NSString* merchantName = options[@"merchantName"];
+        NSDecimalNumber* orderTotal = options[@"orderTotal"]
+        if(!merchantIdentifier || !countryCode || !currencyCode || !merchantName || !orderTotal){
             reject(@"MISSING_OPTIONS", @"Not all required Apple Pay options were provided", nil);
         }
         self.braintreeClient = [[BTAPIClient alloc] initWithAuthorization:clientToken];
 
         self.paymentRequest = [[PKPaymentRequest alloc] init];
-        self.paymentRequest.merchantIdentifier = options[@"merchantIdentifier"];
+        self.paymentRequest.merchantIdentifier = merchantIdentifier;
         self.paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
-        self.paymentRequest.countryCode = options[@"countryCode"];
-        self.paymentRequest.currencyCode = options[@"currencyCode"];
+        self.paymentRequest.countryCode = countryCode;
+        self.paymentRequest.currencyCode = currencyCode;
         self.paymentRequest.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkDiscover, PKPaymentNetworkChinaUnionPay];
         self.paymentRequest.paymentSummaryItems =
             @[
-                [PKPaymentSummaryItem summaryItemWithLabel:options[@"merchantName"] amount:[NSDecimalNumber decimalNumberWithString:options[@"orderTotal"]]]
+                [PKPaymentSummaryItem summaryItemWithLabel:merchantName amount:[NSDecimalNumber decimalNumberWithString:orderTotal]]
             ];
 
         self.viewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest: self.paymentRequest];
