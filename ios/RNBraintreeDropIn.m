@@ -1,3 +1,4 @@
+@import PassKit;
 #import "RNBraintreeDropIn.h"
 
 @implementation RNBraintreeDropIn
