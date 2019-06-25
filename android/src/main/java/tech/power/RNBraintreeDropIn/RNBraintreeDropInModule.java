@@ -50,8 +50,8 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
 
     DropInRequest dropInRequest = new DropInRequest().clientToken(options.getString("clientToken"));
 
-    if(options.hasKey("vaultManager") && options.getBoolean("vaultManager")) {
-      dropInRequest.vaultManager(true);
+    if(options.hasKey("vaultManager")) {
+      dropInRequest.vaultManager(options.getBoolean("vaultManager"));
     }
 
     dropInRequest.collectDeviceData(true);
