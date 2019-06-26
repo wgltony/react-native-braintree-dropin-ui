@@ -12,6 +12,7 @@ RCT_REMAP_METHOD(show,
                  showWithOptions:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     self.resolve = resolve;
+    self.applePayAuthorized = NO;
 
     NSString* clientToken = options[@"clientToken"];
     if (!clientToken) {
@@ -124,6 +125,7 @@ RCT_REMAP_METHOD(show,
             // NSLog(@"description = %@", tokenizedApplePayPayment.localizedDescription);
 
             completion(PKPaymentAuthorizationStatusSuccess);
+            self.applePayAuthorized = YES;
 
 
             NSMutableDictionary* result = [NSMutableDictionary new];
@@ -147,6 +149,9 @@ RCT_REMAP_METHOD(show,
 // Be sure to implement -paymentAuthorizationViewControllerDidFinish:
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller{
     [self.reactRoot dismissViewControllerAnimated:YES completion:nil];
+    if(self.applePayAuthorized == NO){
+        reject(@"USER_CANCELLATION", @"The user cancelled", nil);
+    }
 }
 
 + (void)resolvePayment:(BTDropInResult* _Nullable)result deviceData:(NSString * _Nonnull)deviceDataCollector resolver:(RCTPromiseResolveBlock _Nonnull)resolve {
