@@ -12,6 +12,7 @@ RCT_REMAP_METHOD(show,
                  showWithOptions:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     self.resolve = resolve;
+    self.reject = reject;
     self.applePayAuthorized = NO;
 
     NSString* clientToken = options[@"clientToken"];
@@ -150,7 +151,7 @@ RCT_REMAP_METHOD(show,
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller{
     [self.reactRoot dismissViewControllerAnimated:YES completion:nil];
     if(self.applePayAuthorized == NO){
-        reject(@"USER_CANCELLATION", @"The user cancelled", nil);
+        self.reject(@"USER_CANCELLATION", @"The user cancelled", nil);
     }
 }
 
