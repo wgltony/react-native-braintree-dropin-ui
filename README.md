@@ -169,7 +169,8 @@ import BraintreeDropIn from 'react-native-braintree-dropin-ui';
 
 BraintreeDropIn.show({
 	clientToken: 'token',
-  merchantIdentifier: 'applePayMerchantIdentifier',    
+  merchantIdentifier: 'applePayMerchantIdentifier',
+  googleMerchantId: 'googlePayMerchantId',
   countryCode: 'US',    //apple pay setting
   currencyCode: 'USD',   //apple pay setting
   merchantName: 'Your Merchant Name for Apple Pay',
@@ -198,7 +199,8 @@ BraintreeDropIn.show({
   threeDSecure: {
     amount: 1.0,
   },
-  merchantIdentifier: 'applePayMerchantIdentifier',    
+  merchantIdentifier: 'applePayMerchantIdentifier',
+  googleMerchantId: 'googlePayMerchantId',
   countryCode: 'US',    //apple pay setting
   currencyCode: 'USD',   //apple pay setting
   merchantName: 'Your Merchant Name for Apple Pay',
