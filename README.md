@@ -1,6 +1,6 @@
 # react-native-braintree-dropin-ui
 
-> React Native integration of Braintree Drop-in IOS V4 ANDROID V2 (Apple Pay &Android Pay Enabled)
+> React Native integration of Braintree Drop-in IOS V4 ANDROID V3 (Apple Pay &Google Pay Enabled)
 
 ## Getting started
 
