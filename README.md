@@ -29,6 +29,26 @@ pod 'CardIO'
 
 ```
 
+When using React Native versions < 0.60, the following must also be added to your `Podfile`:
+
+```
+pod 'Braintree'	
+
+pod 'BraintreeDropIn'
+
+ # comment the next line to disable Apple pay	
+pod 'Braintree/Apple-Pay'
+
+ # comment the next line to disable PayPal	
+pod 'Braintree/PayPal'	
+
+ # comment the next line to disable Venmo	
+pod 'Braintree/Venmo'	
+
+ # Data collector for Braintree Advanced Fraud Tools 	
+pod 'Braintree/DataCollector'
+```
+
 Then:
 
 ```bash
