@@ -31,6 +31,10 @@
 
 @property (nonatomic) RCTPromiseResolveBlock _Nonnull resolve;
 
+@property (nonatomic) RCTPromiseRejectBlock _Nonnull reject;
+
+@property (nonatomic, assign) BOOL *_Nonnull applePayAuthorized;
+
 + (void)resolvePayment:(BTDropInResult* _Nullable)result deviceData:(NSString * _Nonnull)deviceDataCollector resolver:(RCTPromiseResolveBlock _Nonnull)resolve;
 
 @end
