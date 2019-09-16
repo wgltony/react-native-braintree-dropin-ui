@@ -1,15 +1,18 @@
 #import "RNBraintreeDropIn.h"
 
+
 @implementation RNBraintreeDropIn
 
 - (dispatch_queue_t)methodQueue
 {
     return dispatch_get_main_queue();
 }
+
 RCT_EXPORT_MODULE(RNBraintreeDropIn)
 
 RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
+    self.recentNonce = [[NSMutableArray alloc] init];
     self.resolve = resolve;
     self.reject = reject;
     self.applePayAuthorized = NO;
@@ -75,15 +78,18 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
     }
     
     [apiClient fetchPaymentMethodNonces:^(NSArray<BTPaymentMethodNonce *> * _Nullable paymentMethodNonces, NSError * _Nullable error) {
-        NSLog(@"dongdong1 = %@", paymentMethodNonces[0]);
+        if(paymentMethodNonces != nil){
+            for(BTPaymentMethodNonce *paymentMethodNonce in paymentMethodNonces){
+                [self.recentNonce addObject:paymentMethodNonce.nonce];
+            }
+        }
     }];
-   
     BTDropInController *dropIn = [[BTDropInController alloc] initWithAuthorization:clientToken request:request handler:^(BTDropInController * _Nonnull controller, BTDropInResult * _Nullable result, NSError * _Nullable error) {
         [self.reactRoot dismissViewControllerAnimated:YES completion:nil];
-
+        
         //result.paymentOptionType == .ApplePay
         //NSLog(@"paymentOptionType = %ld", result.paymentOptionType);
-
+        
         if (error != nil) {
             reject(error.localizedDescription, error.localizedDescription, error);
         } else if (result.cancelled) {
@@ -99,13 +105,13 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
                     UIViewController *ctrl = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
                     [ctrl presentViewController:self.viewController animated:YES completion:nil];
                 } else{
-                    [[self class] resolvePayment:result deviceData:self.deviceDataCollector resolver:resolve];
+                    [[self class] resolvePayment:result deviceData:self.deviceDataCollector resolver:resolve rececntNonce:self.recentNonce];
                 }
             } else if(result.paymentMethod == nil && result.paymentOptionType == 18){ //Apple Pay
                 UIViewController *ctrl = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
                 [ctrl presentViewController:self.viewController animated:YES completion:nil];
             } else{
-                [[self class] resolvePayment:result deviceData:self.deviceDataCollector resolver:resolve];
+                [[self class] resolvePayment:result deviceData:self.deviceDataCollector resolver:resolve rececntNonce:self.recentNonce];
             }
         }
     }];
@@ -138,7 +144,7 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
                                          [result setObject:[NSString stringWithFormat: @"%@ %@", @"", tokenizedApplePayPayment.type] forKey:@"description"];
                                          [result setObject:[NSNumber numberWithBool:false] forKey:@"isDefault"];
                                          [result setObject:self.deviceDataCollector forKey:@"deviceData"];
-                                         
+                                         [result setObject:[NSNumber numberWithBool:true] forKey:@"isRecent"];
                                          self.resolve(result);
                                          
                                      } else {
@@ -158,20 +164,21 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
     }
 }
 
-+ (void)resolvePayment:(BTDropInResult* _Nullable)result deviceData:(NSString * _Nonnull)deviceDataCollector resolver:(RCTPromiseResolveBlock _Nonnull)resolve {
++ (void)resolvePayment:(BTDropInResult* _Nullable)result deviceData:(NSString * _Nonnull)deviceDataCollector resolver:(RCTPromiseResolveBlock _Nonnull)resolve rececntNonce:(NSArray * _Nonnull)rececntNonce{
 //    NSLog(@"result = %@", result);
     
     NSMutableDictionary* jsResult = [NSMutableDictionary new];
     
     //NSLog(@"paymentMethod = %@", result.paymentMethod);
     //NSLog(@"paymentIcon = %@", result.paymentIcon);
-    
-    [jsResult setObject:result.paymentMethod.nonce forKey:@"nonce"];
+    NSString *nonce = result.paymentMethod.nonce;
+    [jsResult setObject:nonce forKey:@"nonce"];
     [jsResult setObject:result.paymentMethod.type forKey:@"type"];
     [jsResult setObject:result.paymentDescription forKey:@"description"];
     [jsResult setObject:[NSNumber numberWithBool:result.paymentMethod.isDefault] forKey:@"isDefault"];
     [jsResult setObject:deviceDataCollector forKey:@"deviceData"];
-    
+    [jsResult setObject:[NSNumber numberWithBool:[rececntNonce containsObject:nonce]] forKey:@"isRecent"];
+
     resolve(jsResult);
 }
 
