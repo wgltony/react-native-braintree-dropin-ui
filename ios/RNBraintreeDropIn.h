@@ -35,6 +35,8 @@
 
 @property (nonatomic, assign) BOOL *_Nonnull applePayAuthorized;
 
-+ (void)resolvePayment:(BTDropInResult* _Nullable)result deviceData:(NSString * _Nonnull)deviceDataCollector resolver:(RCTPromiseResolveBlock _Nonnull)resolve;
+@property (nonatomic, strong) NSMutableArray *_Nonnull recentNonce;
+
++ (void)resolvePayment:(BTDropInResult* _Nullable)result deviceData:(NSString * _Nonnull)deviceDataCollector resolver:(RCTPromiseResolveBlock _Nonnull)resolve rececntNonce:(NSArray * _Nonnull)rececntNonce;
 
 @end
