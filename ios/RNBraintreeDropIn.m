@@ -1,5 +1,11 @@
 #import "RNBraintreeDropIn.h"
 
+@interface RNBraintreeDropIn () <PKPaymentAuthorizationViewControllerDelegate> {
+    __block NSString *currencuString;
+    __block NSDecimalNumber *orderAmount;
+}
+
+@end
 
 @implementation RNBraintreeDropIn
 
@@ -52,8 +58,10 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
         NSString* merchantIdentifier = options[@"merchantIdentifier"];
         NSString* countryCode = options[@"countryCode"];
         NSString* currencyCode = options[@"currencyCode"];
+        currencuString = currencyCode;
         NSString* merchantName = options[@"merchantName"];
-        NSDecimalNumber* orderTotal = options[@"orderTotal"];
+        NSString* orderTotal = options[@"orderTotal"];
+        orderAmount = [NSDecimalNumber decimalNumberWithString: orderTotal];
         if(!merchantIdentifier || !countryCode || !currencyCode || !merchantName || !orderTotal){
             reject(@"MISSING_OPTIONS", @"Not all required Apple Pay options were provided", nil);
             return;
@@ -68,7 +76,7 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
         self.paymentRequest.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkDiscover, PKPaymentNetworkChinaUnionPay];
         self.paymentRequest.paymentSummaryItems =
         @[
-          [PKPaymentSummaryItem summaryItemWithLabel:merchantName amount:[NSDecimalNumber decimalNumberWithString:orderTotal]]
+          [PKPaymentSummaryItem summaryItemWithLabel:merchantName amount: orderAmount]
           ];
         
         self.viewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest: self.paymentRequest];
@@ -108,14 +116,38 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
                     [[self class] resolvePayment:result deviceData:self.deviceDataCollector resolver:resolve rececntNonce:self.recentNonce];
                 }
             } else if(result.paymentMethod == nil && result.paymentOptionType == 18){ //Apple Pay
-                UIViewController *ctrl = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-                [ctrl presentViewController:self.viewController animated:YES completion:nil];
+                [self payWithApplePayFromBraintree:result];
             } else{
                 [[self class] resolvePayment:result deviceData:self.deviceDataCollector resolver:resolve rececntNonce:self.recentNonce];
             }
         }
     }];
     [self.reactRoot presentViewController:dropIn animated:YES completion:nil];
+}
+
+- (void) payWithApplePayFromBraintree:(BTDropInResult *) result {
+    PKPaymentRequest *paymentRequest = [self paymentRequest];
+    PKPaymentAuthorizationViewController *vc = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:paymentRequest];
+    vc.delegate = self;
+    UIViewController *ctrl = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    [ctrl presentViewController:vc animated:YES completion:nil];
+}
+
+- (PKPaymentRequest *)paymentRequest {
+    PKPaymentRequest *paymentRequest = [[PKPaymentRequest alloc] init];
+    paymentRequest.merchantIdentifier = @"merchant.jmango360.app.dev";
+    paymentRequest.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkVisa, PKPaymentNetworkMasterCard];
+    paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
+    
+    NSLocale *currentLocale = [NSLocale currentLocale]; // get the current locale.
+    NSString *countryCode = [currentLocale objectForKey:NSLocaleCountryCode];
+    paymentRequest.currencyCode = currencuString;
+    paymentRequest.countryCode = [countryCode uppercaseString];
+    
+    paymentRequest.paymentSummaryItems =
+    @[[PKPaymentSummaryItem summaryItemWithLabel:@"Grand Total" amount:orderAmount]
+      ];
+    return paymentRequest;
 }
 
 - (void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller
@@ -165,7 +197,7 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
 }
 
 + (void)resolvePayment:(BTDropInResult* _Nullable)result deviceData:(NSString * _Nonnull)deviceDataCollector resolver:(RCTPromiseResolveBlock _Nonnull)resolve rececntNonce:(NSArray * _Nonnull)rececntNonce{
-//    NSLog(@"result = %@", result);
+    //    NSLog(@"result = %@", result);
     
     NSMutableDictionary* jsResult = [NSMutableDictionary new];
     
@@ -178,7 +210,7 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
     [jsResult setObject:[NSNumber numberWithBool:result.paymentMethod.isDefault] forKey:@"isDefault"];
     [jsResult setObject:deviceDataCollector forKey:@"deviceData"];
     [jsResult setObject:[NSNumber numberWithBool:[rececntNonce containsObject:nonce]] forKey:@"isRecent"];
-
+    
     resolve(jsResult);
 }
 
