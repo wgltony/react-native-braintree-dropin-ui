@@ -152,13 +152,14 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
   private final void resolvePayment(PaymentMethodNonce paymentMethodNonce, String deviceData) {
     WritableMap jsResult = Arguments.createMap();
     String nonce = paymentMethodNonce.getNonce();
+    String type = paymentMethodNonce.getTypeLabel();
 
     jsResult.putString("nonce", paymentMethodNonce.getNonce());
-    jsResult.putString("type", paymentMethodNonce.getTypeLabel());
+    jsResult.putString("type", type);
     jsResult.putString("description", paymentMethodNonce.getDescription());
     jsResult.putBoolean("isDefault", paymentMethodNonce.isDefault());
     jsResult.putString("deviceData", deviceData);
-    jsResult.putBoolean("isRecent", recentNonces.contains(nonce));
+    jsResult.putBoolean("isRecent", type == "Google Pay" ? true : recentNonces.contains(nonce));
     mPromise.resolve(jsResult);
   }
 
