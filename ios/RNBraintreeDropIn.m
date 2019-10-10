@@ -1,7 +1,7 @@
 #import "RNBraintreeDropIn.h"
 
 @interface RNBraintreeDropIn () <PKPaymentAuthorizationViewControllerDelegate> {
-    __block NSString *currencuString;
+    __block NSString *currencyString;
     __block NSDecimalNumber *orderAmount;
 }
 
@@ -58,7 +58,7 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
         NSString* merchantIdentifier = options[@"merchantIdentifier"];
         NSString* countryCode = options[@"countryCode"];
         NSString* currencyCode = options[@"currencyCode"];
-        currencuString = currencyCode;
+        currencyString = currencyCode;
         NSString* merchantName = options[@"merchantName"];
         NSString* orderTotal = options[@"orderTotal"];
         orderAmount = [NSDecimalNumber decimalNumberWithString: orderTotal];
@@ -67,17 +67,7 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
             return;
         }
         self.braintreeClient = [[BTAPIClient alloc] initWithAuthorization:clientToken];
-        
-        self.paymentRequest = [[PKPaymentRequest alloc] init];
-        self.paymentRequest.merchantIdentifier = merchantIdentifier;
-        self.paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
-        self.paymentRequest.countryCode = countryCode;
-        self.paymentRequest.currencyCode = currencyCode;
-        self.paymentRequest.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkDiscover, PKPaymentNetworkChinaUnionPay];
-        self.paymentRequest.paymentSummaryItems =
-        @[
-          [PKPaymentSummaryItem summaryItemWithLabel:merchantName amount: orderAmount]
-          ];
+        self.paymentRequest = [self paymentRequestWithMerchantId:options];
         
         self.viewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest: self.paymentRequest];
         self.viewController.delegate = self;
@@ -126,27 +116,29 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
 }
 
 - (void) payWithApplePayFromBraintree:(BTDropInResult *) result {
-    PKPaymentRequest *paymentRequest = [self paymentRequest];
+    PKPaymentRequest *paymentRequest = self.paymentRequest;
     PKPaymentAuthorizationViewController *vc = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:paymentRequest];
     vc.delegate = self;
     UIViewController *ctrl = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
     [ctrl presentViewController:vc animated:YES completion:nil];
 }
 
-- (PKPaymentRequest *)paymentRequest {
+- (PKPaymentRequest *)paymentRequestWithMerchantId:(NSDictionary *) options {
     PKPaymentRequest *paymentRequest = [[PKPaymentRequest alloc] init];
-    paymentRequest.merchantIdentifier = @"merchant.jmango360.app.dev";
-    paymentRequest.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkVisa, PKPaymentNetworkMasterCard];
+    paymentRequest.merchantIdentifier = options[@"merchantIdentifier"];
+    paymentRequest.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkDiscover, PKPaymentNetworkChinaUnionPay];
     paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
     
     NSLocale *currentLocale = [NSLocale currentLocale]; // get the current locale.
     NSString *countryCode = [currentLocale objectForKey:NSLocaleCountryCode];
-    paymentRequest.currencyCode = currencuString;
+    paymentRequest.currencyCode = options[@"currencyCode"];
     paymentRequest.countryCode = [countryCode uppercaseString];
     
     paymentRequest.paymentSummaryItems =
-    @[[PKPaymentSummaryItem summaryItemWithLabel:@"Grand Total" amount:orderAmount]
+    @[
+      [PKPaymentSummaryItem summaryItemWithLabel:options[@"merchantName"] amount: orderAmount]
       ];
+    
     return paymentRequest;
 }
 
