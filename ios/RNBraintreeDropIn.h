@@ -13,6 +13,7 @@
 #import "BTDataCollector.h"
 
 #import "BraintreeApplePay.h"
+#import "BraintreePaymentFlow.h"
 
 @interface RNBraintreeDropIn : NSObject <RCTBridgeModule>
 
