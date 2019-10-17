@@ -1,4 +1,5 @@
 #import "RNBraintreeDropIn.h"
+#import "BraintreePaymentFlow.h"
 
 @interface RNBraintreeDropIn () <PKPaymentAuthorizationViewControllerDelegate> {
     __block NSString *currencyString;
@@ -33,14 +34,18 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
     
     NSDictionary* threeDSecureOptions = options[@"threeDSecure"];
     if (threeDSecureOptions) {
+        BTThreeDSecureRequest *threeDSecureRequest = [[BTThreeDSecureRequest alloc] init];
         NSNumber* threeDSecureAmount = threeDSecureOptions[@"amount"];
         if (!threeDSecureAmount) {
             reject(@"NO_3DS_AMOUNT", @"You must provide an amount for 3D Secure", nil);
             return;
         }
+        threeDSecureRequest.amount = [NSDecimalNumber decimalNumberWithDecimal:[threeDSecureAmount decimalValue]];
+        threeDSecureRequest.versionRequested = BTThreeDSecureVersion1;
+        threeDSecureRequest.challengeRequested = YES;
         
         request.threeDSecureVerification = YES;
-        request.amount = [threeDSecureAmount stringValue];
+        request.threeDSecureRequest = threeDSecureRequest;
     }
     
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:clientToken];
