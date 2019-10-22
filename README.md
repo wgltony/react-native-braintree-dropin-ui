@@ -151,6 +151,7 @@ In your `AppDelegate.m`:
 {
     ...
     [BTAppSwitch setReturnURLScheme:self.paymentsURLScheme];
+    ...
 }
 
 - (BOOL)application:(UIApplication *)application
@@ -160,13 +161,37 @@ In your `AppDelegate.m`:
     if ([url.scheme localizedCaseInsensitiveCompare:self.paymentsURLScheme] == NSOrderedSame) {
         return [BTAppSwitch handleOpenURL:url options:options];
     }
-    
+
     return [RCTLinkingManager application:application openURL:url options:options];
 }
 
 - (NSString *)paymentsURLScheme {
     NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
     return [NSString stringWithFormat:@"%@.%@", bundleIdentifier, @"payments"];
+}
+```
+
+In your `AppDelegate.swift`:
+
+```swift
+import Braintree
+
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    ...
+    BTAppSwitch.setReturnURLScheme(self.paymentsURLScheme)
+    ...
+}
+
+func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    if let scheme = url.scheme, scheme.localizedCaseInsensitiveCompare(self.paymentsURLScheme) == .orderedSame {
+        return BTAppSwitch.handleOpen(url, options: options)
+    }
+    return RCTLinkingManager.application(app, open: url, options: options)
+}
+    
+private var paymentsURLScheme: String {
+    let bundleIdentifier = Bundle.main.bundleIdentifier ?? ""
+    return bundleIdentifier + ".payments"
 }
 ```
 
