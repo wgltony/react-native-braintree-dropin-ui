@@ -50,6 +50,10 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
 
     DropInRequest dropInRequest = new DropInRequest().clientToken(options.getString("clientToken"));
 
+    if(options.hasKey("vaultManager")) {
+      dropInRequest.vaultManager(options.getBoolean("vaultManager"));
+    }
+
     dropInRequest.collectDeviceData(true);
 
     if(options.getBoolean("googlePay")){
@@ -58,7 +62,9 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
           .setTotalPrice(options.getString("orderTotal"))
           .setTotalPriceStatus(WalletConstants.TOTAL_PRICE_STATUS_FINAL)
           .setCurrencyCode(options.getString("currencyCode"))
-          .build());
+          .build())
+          .billingAddressRequired(true)
+          .googleMerchantId(options.getString("googleMerchantId"));
 
       dropInRequest.googlePaymentRequest(googlePaymentRequest);
     }

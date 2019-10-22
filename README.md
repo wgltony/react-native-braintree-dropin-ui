@@ -1,6 +1,6 @@
 # react-native-braintree-dropin-ui
 
-> React Native integration of Braintree Drop-in IOS V4 ANDROID V2 (Apple Pay &Android Pay Enabled)
+> React Native integration of Braintree Drop-in IOS V4 ANDROID V3 (Apple Pay &Google Pay Enabled)
 
 ## Getting started
 
@@ -13,6 +13,7 @@ npm install react-native-braintree-dropin-ui --save
 ```bash
 react-native link react-native-braintree-dropin-ui
 ```
+Note: Don't run the above command when using React Native versions > 0.60, autolinking will link the package.
 
 #### iOS specific
 
@@ -23,24 +24,29 @@ If you don't have a Podfile or are unsure on how to proceed, see the [CocoaPods]
 In your `Podfile`, add:
 
 ```
-pod 'Braintree'
-pod 'BraintreeDropIn'
-
-# comment the next line to disable Apple pay
-pod 'Braintree/Apple-Pay'
-
-# comment the next line to disable PayPal
-pod 'Braintree/PayPal'
-
-# comment the next line to disable Venmo
-pod 'Braintree/Venmo'
-
-# Data collector for Braintree Advanced Fraud Tools 
-pod 'Braintree/DataCollector'
-
 # comment the next line to disable credit card scanning
 pod 'CardIO'
 
+```
+
+When using React Native versions < 0.60, the following must also be added to your `Podfile`:
+
+```
+pod 'Braintree'	
+
+pod 'BraintreeDropIn'
+
+ # comment the next line to disable Apple pay	
+pod 'Braintree/Apple-Pay'
+
+ # comment the next line to disable PayPal	
+pod 'Braintree/PayPal'	
+
+ # comment the next line to disable Venmo	
+pod 'Braintree/Venmo'	
+
+ # Data collector for Braintree Advanced Fraud Tools 	
+pod 'Braintree/DataCollector'
 ```
 
 Then:
@@ -53,9 +59,11 @@ pod install
 
 #### Apple Pay
 
-If you've included the Apple Pay pod or framework in your project, Drop-in will show Apple Pay as a payment option as long as you've completed the [Apple Pay integration][6] and the customer's [device and card type are supported][7].
+The Drop-in will show Apple Pay as a payment option as long as you've completed the [Apple Pay integration][6] and the customer's [device and card type are supported][7].
 
 #### Android specific
+
+Note: Only complete these steps if using React Native versions < 0.60, autolinking will do these steps automatically.
 
 Add in your `app/build.gradle`:
 
@@ -66,16 +74,6 @@ dependencies {
     implementation "io.card:android-sdk:5.+"
     implementation 'com.braintreepayments.api:data-collector:2.+'
     implementation 'com.google.android.gms:play-services-wallet:11.4.0'
-```
-
-
-Add in your `AndroidManifest.xml`:
-
-```
-    <!-- Enables the Google Pay API -->
-    <meta-data 
-        android:name="com.google.android.gms.wallet.api.enabled" 
-        android:value="true"/>
 ```
 
 Add in your `MainApplication.java`:
@@ -89,6 +87,25 @@ Add in your `MainApplication.java`:
              new RNBraintreeDropInPackage()  // <------ add here
          );
 
+```
+
+The below steps apply to all versions of React Native
+
+If you wish to support Google Pay, add in your `AndroidManifest.xml`:
+
+```
+    <!-- Enables the Google Pay API -->
+    <meta-data 
+        android:name="com.google.android.gms.wallet.api.enabled" 
+        android:value="true"/>
+```
+
+If you wish to support card swipe support, add in your 'app/build.gradle`:
+
+```
+dependencies {
+...
+    implementation "io.card:android-sdk:5.+"
 ```
 
 ### Configuration
@@ -169,13 +186,15 @@ import BraintreeDropIn from 'react-native-braintree-dropin-ui';
 
 BraintreeDropIn.show({
 	clientToken: 'token',
-  merchantIdentifier: 'applePayMerchantIdentifier',    
+  merchantIdentifier: 'applePayMerchantIdentifier',
+  googleMerchantId: 'googlePayMerchantId',
   countryCode: 'US',    //apple pay setting
   currencyCode: 'USD',   //apple pay setting
   merchantName: 'Your Merchant Name for Apple Pay',
   orderTotal:'Total Price',
   googlePay: true,
   applePay: true,
+  vaultManager: true,
 })
 .then(result => console.log(result))
 .catch((error) => {
@@ -197,13 +216,15 @@ BraintreeDropIn.show({
   threeDSecure: {
     amount: 1.0,
   },
-  merchantIdentifier: 'applePayMerchantIdentifier',    
+  merchantIdentifier: 'applePayMerchantIdentifier',
+  googleMerchantId: 'googlePayMerchantId',
   countryCode: 'US',    //apple pay setting
   currencyCode: 'USD',   //apple pay setting
   merchantName: 'Your Merchant Name for Apple Pay',
   orderTotal:'Total Price',
   googlePay: true,
   applePay: true,
+  vaultManager: true,
 })
 .then(result => console.log(result))
 .catch((error) => {

@@ -6,12 +6,13 @@
 {
     return dispatch_get_main_queue();
 }
-RCT_EXPORT_MODULE()
+RCT_EXPORT_MODULE(RNBraintreeDropIn)
 
-RCT_REMAP_METHOD(show,
-                 showWithOptions:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     self.resolve = resolve;
+    self.reject = reject;
+    self.applePayAuthorized = NO;
 
     NSString* clientToken = options[@"clientToken"];
     if (!clientToken) {
@@ -40,20 +41,31 @@ RCT_REMAP_METHOD(show,
         self.deviceDataCollector = deviceDataCollector;
     }];
 
-    
+    if([options[@"vaultManager"] boolValue]){
+        request.vaultManager = YES;
+    }
 
     if([options[@"applePay"] boolValue]){
+        NSString* merchantIdentifier = options[@"merchantIdentifier"];
+        NSString* countryCode = options[@"countryCode"];
+        NSString* currencyCode = options[@"currencyCode"];
+        NSString* merchantName = options[@"merchantName"];
+        NSDecimalNumber* orderTotal = options[@"orderTotal"];
+        if(!merchantIdentifier || !countryCode || !currencyCode || !merchantName || !orderTotal){
+            reject(@"MISSING_OPTIONS", @"Not all required Apple Pay options were provided", nil);
+            return;
+        }
         self.braintreeClient = [[BTAPIClient alloc] initWithAuthorization:clientToken];
 
         self.paymentRequest = [[PKPaymentRequest alloc] init];
-        self.paymentRequest.merchantIdentifier = options[@"merchantIdentifier"];
+        self.paymentRequest.merchantIdentifier = merchantIdentifier;
         self.paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
-        self.paymentRequest.countryCode = options[@"countryCode"];
-        self.paymentRequest.currencyCode = options[@"currencyCode"];
+        self.paymentRequest.countryCode = countryCode;
+        self.paymentRequest.currencyCode = currencyCode;
         self.paymentRequest.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkDiscover, PKPaymentNetworkChinaUnionPay];
         self.paymentRequest.paymentSummaryItems =
             @[
-                [PKPaymentSummaryItem summaryItemWithLabel:options[@"merchantName"] amount:[NSDecimalNumber decimalNumberWithString:options[@"orderTotal"]]]
+                [PKPaymentSummaryItem summaryItemWithLabel:merchantName amount:[NSDecimalNumber decimalNumberWithString:orderTotal]]
             ];
 
         self.viewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest: self.paymentRequest];
@@ -113,6 +125,7 @@ RCT_REMAP_METHOD(show,
             // NSLog(@"description = %@", tokenizedApplePayPayment.localizedDescription);
 
             completion(PKPaymentAuthorizationStatusSuccess);
+            self.applePayAuthorized = YES;
 
 
             NSMutableDictionary* result = [NSMutableDictionary new];
@@ -136,6 +149,9 @@ RCT_REMAP_METHOD(show,
 // Be sure to implement -paymentAuthorizationViewControllerDidFinish:
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller{
     [self.reactRoot dismissViewControllerAnimated:YES completion:nil];
+    if(self.applePayAuthorized == NO){
+        self.reject(@"USER_CANCELLATION", @"The user cancelled", nil);
+    }
 }
 
 + (void)resolvePayment:(BTDropInResult* _Nullable)result deviceData:(NSString * _Nonnull)deviceDataCollector resolver:(RCTPromiseResolveBlock _Nonnull)resolve {
