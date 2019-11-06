@@ -8,6 +8,9 @@ import com.braintreepayments.api.BraintreeFragment;
 import com.braintreepayments.api.PaymentMethod;
 import com.braintreepayments.api.exceptions.InvalidArgumentException;
 import com.braintreepayments.api.interfaces.PaymentMethodNoncesUpdatedListener;
+import com.braintreepayments.api.models.ThreeDSecureAdditionalInformation;
+import com.braintreepayments.api.models.ThreeDSecurePostalAddress;
+import com.braintreepayments.api.models.ThreeDSecureRequest;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -29,6 +32,8 @@ import com.google.android.gms.wallet.WalletConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
   private Promise mPromise;
@@ -56,7 +61,7 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
       }
     };
     try {
-      BraintreeFragment mFragment = BraintreeFragment.newInstance(getCurrentActivity(),token);
+      BraintreeFragment mFragment = BraintreeFragment.newInstance((AppCompatActivity) getCurrentActivity(),token);
       mFragment.addListener(paymentMethodNoncesUpdatedListener);
       PaymentMethod.getPaymentMethodNonces(mFragment);
     } catch (InvalidArgumentException e) {
@@ -99,12 +104,14 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
         promise.reject("NO_3DS_AMOUNT", "You must provide an amount for 3D Secure");
         return;
       }
-
+      ThreeDSecureRequest threeDSecureRequest = new ThreeDSecureRequest()
+              .amount(String.valueOf(threeDSecureOptions.getDouble("amount")))
+    .versionRequested(ThreeDSecureRequest.VERSION_2);
       isVerifyingThreeDSecure = true;
 
       dropInRequest
-      .amount(String.valueOf(threeDSecureOptions.getDouble("amount")))
-      .requestThreeDSecureVerification(true);
+      .requestThreeDSecureVerification(true)
+              .threeDSecureRequest(threeDSecureRequest);
     }
     dropInRequest.vaultManager(true);
     mPromise = promise;
