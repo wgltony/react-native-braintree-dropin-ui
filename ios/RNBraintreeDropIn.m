@@ -41,7 +41,7 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
             return;
         }
         threeDSecureRequest.amount = [NSDecimalNumber decimalNumberWithDecimal:[threeDSecureAmount decimalValue]];
-        threeDSecureRequest.versionRequested = BTThreeDSecureVersion1;
+        threeDSecureRequest.versionRequested = BTThreeDSecureVersion2;
         threeDSecureRequest.challengeRequested = YES;
         
         request.threeDSecureVerification = YES;
