@@ -20,6 +20,8 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
         return;
     }
 
+    [BTUIKAppearance darkTheme];
+
     BTDropInRequest *request = [[BTDropInRequest alloc] init];
 
     NSDictionary* threeDSecureOptions = options[@"threeDSecure"];
@@ -91,13 +93,10 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
                         reject(@"3DSECURE_NOT_ABLE_TO_SHIFT_LIABILITY", @"3D Secure liability cannot be shifted", nil);
                     } else if (!cardNonce.threeDSecureInfo.liabilityShifted && cardNonce.threeDSecureInfo.wasVerified) {
                         reject(@"3DSECURE_LIABILITY_NOT_SHIFTED", @"3D Secure liability was not shifted", nil);
-                    } else if(result.paymentMethod == nil && result.paymentOptionType == 18){ //Apple Pay
-                        UIViewController *ctrl = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-                        [ctrl presentViewController:self.viewController animated:YES completion:nil];
                     } else{
                         [[self class] resolvePayment:result deviceData:self.deviceDataCollector resolver:resolve];
                     }
-                } else if(result.paymentMethod == nil && result.paymentOptionType == 18){ //Apple Pay
+                } else if(result.paymentMethod == nil && result.paymentOptionType == 16){ //Apple Pay
                     UIViewController *ctrl = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
                     [ctrl presentViewController:self.viewController animated:YES completion:nil];
                 } else{

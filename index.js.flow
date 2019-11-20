@@ -1,6 +1,8 @@
 type ShowOptions = {|
   clientToken: string,
-  ...
+  threeDSecure?: {|
+    amount: number,
+  |},
 |};
 
 type ShowResult = {|
