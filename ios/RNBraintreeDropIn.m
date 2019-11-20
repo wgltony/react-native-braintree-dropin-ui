@@ -1,4 +1,5 @@
 #import "RNBraintreeDropIn.h"
+#import <React/RCTUtils.h>
 
 @implementation RNBraintreeDropIn
 
@@ -97,8 +98,10 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
                         [[self class] resolvePayment:result deviceData:self.deviceDataCollector resolver:resolve];
                     }
                 } else if(result.paymentMethod == nil && result.paymentOptionType == 16){ //Apple Pay
-                    UIViewController *ctrl = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-                    [ctrl presentViewController:self.viewController animated:YES completion:nil];
+                    // UIViewController *ctrl = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+                    // [ctrl presentViewController:self.viewController animated:YES completion:nil];
+                    UIViewController *rootViewController = RCTPresentedViewController();
+                    [rootViewController presentViewController:self.viewController animated:YES completion:nil];
                 } else{
                     [[self class] resolvePayment:result deviceData:self.deviceDataCollector resolver:resolve];
                 }
