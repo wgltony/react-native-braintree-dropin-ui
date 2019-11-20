@@ -220,6 +220,7 @@ BraintreeDropIn.show({
   googlePay: true,
   applePay: true,
   vaultManager: true,
+  darkTheme: true,
 })
 .then(result => console.log(result))
 .catch((error) => {
@@ -250,6 +251,7 @@ BraintreeDropIn.show({
   googlePay: true,
   applePay: true,
   vaultManager: true,
+  darkTheme: true,
 })
 .then(result => console.log(result))
 .catch((error) => {

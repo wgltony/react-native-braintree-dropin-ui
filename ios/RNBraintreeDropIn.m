@@ -11,6 +11,11 @@ RCT_EXPORT_MODULE(RNBraintreeDropIn)
 
 RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
+
+    if([options[@"darkTheme"] boolValue]){
+        [BTUIKAppearance darkTheme];
+    }
+
     self.resolve = resolve;
     self.reject = reject;
     self.applePayAuthorized = NO;
@@ -20,8 +25,6 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
         reject(@"NO_CLIENT_TOKEN", @"You must provide a client token", nil);
         return;
     }
-
-    [BTUIKAppearance darkTheme];
 
     BTDropInRequest *request = [[BTDropInRequest alloc] init];
 
