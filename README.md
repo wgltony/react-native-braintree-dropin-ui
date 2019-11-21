@@ -4,16 +4,20 @@
 
 ## Getting started
 
+For React Native versions >= 0.60
 ```bash
 npm install react-native-braintree-dropin-ui --save
+
+cd ./ios
+pod install
 ```
 
+For React Native versions < 0.60
 ### Mostly automatic installation
 
 ```bash
 react-native link react-native-braintree-dropin-ui
 ```
-Note: Don't run the above command when using React Native versions > 0.60, autolinking will link the package.
 
 #### iOS specific
 
