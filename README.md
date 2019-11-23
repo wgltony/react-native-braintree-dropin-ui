@@ -1,6 +1,12 @@
 # react-native-braintree-dropin-ui
 
-> React Native integration of Braintree Drop-in IOS & ANDROID (Apple Pay, Google Pay, Paypal, Venmo, Credit Card)
+> React Native integration of Braintree Drop-in for IOS & ANDROID (Apple Pay, Google Pay, Paypal, Venmo, Credit Card)
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/wgltony/react-native-braintree-dropin-ui/master/node_modules/1.png" width="250">
+<img src="https://raw.githubusercontent.com/wgltony/react-native-braintree-dropin-ui/master/node_modules/2.png" width="250">
+<img src="https://raw.githubusercontent.com/wgltony/react-native-braintree-dropin-ui/master/node_modules/3.png" width="250">
+</p>
 
 ## Getting started
 
@@ -36,20 +42,20 @@ pod 'CardIO'
 When using React Native versions < 0.60, the following must also be added to your `Podfile`:
 
 ```
-pod 'Braintree'	
+pod 'Braintree' 
 
 pod 'BraintreeDropIn'
 
- # comment the next line to disable Apple pay	
+ # comment the next line to disable Apple pay 
 pod 'Braintree/Apple-Pay'
 
- # comment the next line to disable PayPal	
-pod 'Braintree/PayPal'	
+ # comment the next line to disable PayPal  
+pod 'Braintree/PayPal'  
 
- # comment the next line to disable Venmo	
-pod 'Braintree/Venmo'	
+ # comment the next line to disable Venmo 
+pod 'Braintree/Venmo' 
 
- # Data collector for Braintree Advanced Fraud Tools 	
+ # Data collector for Braintree Advanced Fraud Tools  
 pod 'Braintree/DataCollector'
 ```
 
@@ -214,7 +220,7 @@ For the API, see the [Flow typings][5].
 import BraintreeDropIn from 'react-native-braintree-dropin-ui';
 
 BraintreeDropIn.show({
-	clientToken: 'token',
+  clientToken: 'token',
   merchantIdentifier: 'applePayMerchantIdentifier',
   googleMerchantId: 'googlePayMerchantId',
   countryCode: 'US',    //apple pay setting
@@ -268,10 +274,10 @@ BraintreeDropIn.show({
 });
 ```
 
-[1]:	http://guides.cocoapods.org/using/using-cocoapods.html
-[2]:	https://github.com/braintree/braintree-ios-drop-in
-[3]:	https://github.com/braintree/braintree-android-drop-in
-[4]:	https://developers.braintreepayments.com/guides/client-sdk/setup/android/v2#browser-switch-setup
-[5]:	./index.js.flow
+[1]:  http://guides.cocoapods.org/using/using-cocoapods.html
+[2]:  https://github.com/braintree/braintree-ios-drop-in
+[3]:  https://github.com/braintree/braintree-android-drop-in
+[4]:  https://developers.braintreepayments.com/guides/client-sdk/setup/android/v2#browser-switch-setup
+[5]:  ./index.js.flow
 [6]:  https://developers.braintreepayments.com/guides/apple-pay/configuration/ios/v4
 [7]:  https://articles.braintreepayments.com/guides/payment-methods/apple-pay#compatibility

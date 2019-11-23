@@ -16,6 +16,8 @@
 
 @interface RNBraintreeDropIn : NSObject <RCTBridgeModule>
 
+@property (nonatomic, strong) UIViewController *_Nonnull reactRoot;
+
 // Retain your `BTDataCollector` instance for your entire application lifecycle.
 @property (nonatomic, strong) BTDataCollector *_Nonnull dataCollector;
 
