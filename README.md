@@ -1,22 +1,34 @@
-# react-native-braintree-dropin-ui
+# react-native-braintree-dropin-ui V1.0.6
 
 > React Native integration of Braintree Drop-in for IOS & ANDROID (Apple Pay, Google Pay, Paypal, Venmo, Credit Card)
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/wgltony/react-native-braintree-dropin-ui/master/node_modules/1.png" width="255">
-<img src="https://raw.githubusercontent.com/wgltony/react-native-braintree-dropin-ui/master/node_modules/2.png" width="255">
-<img src="https://raw.githubusercontent.com/wgltony/react-native-braintree-dropin-ui/master/node_modules/3.png" width="255">
+<img src="https://raw.githubusercontent.com/wgltony/react-native-braintree-dropin-ui/master/node_modules/1.png" width="250">
+<img src="https://raw.githubusercontent.com/wgltony/react-native-braintree-dropin-ui/master/node_modules/2.png" width="250">
+<img src="https://raw.githubusercontent.com/wgltony/react-native-braintree-dropin-ui/master/node_modules/3.png" width="250">
 </p>
 
 ## Getting started
 
 For React Native versions >= 0.60
+
+IOS
 ```bash
 npm install react-native-braintree-dropin-ui --save
 
 cd ./ios
 pod install
 ```
+
+Android
+```bash
+npm install react-native-braintree-dropin-ui --save
+```
+
+## Configurate Payment Method(For ALL RN VERSIONS)
+See Braintree's documentation, [Apple Pay][8], [Google Pay][9], [Paypal][10], [Venmo][11]
+Once you have finished setting up all the configurations, it will shows in the dropin UI.
+
 
 For React Native versions < 0.60
 ### Mostly automatic installation
@@ -222,7 +234,7 @@ import BraintreeDropIn from 'react-native-braintree-dropin-ui';
 BraintreeDropIn.show({
   clientToken: 'token',
   merchantIdentifier: 'applePayMerchantIdentifier',
-  googleMerchantId: 'googlePayMerchantId',
+  googlePayMerchantId: 'googlePayMerchantId',
   countryCode: 'US',    //apple pay setting
   currencyCode: 'USD',   //apple pay setting
   merchantName: 'Your Merchant Name for Apple Pay',
@@ -253,7 +265,7 @@ BraintreeDropIn.show({
     amount: 1.0,
   },
   merchantIdentifier: 'applePayMerchantIdentifier',
-  googleMerchantId: 'googlePayMerchantId',
+  googlePayMerchantId: 'googlePayMerchantId',
   countryCode: 'US',    //apple pay setting
   currencyCode: 'USD',   //apple pay setting
   merchantName: 'Your Merchant Name for Apple Pay',
@@ -281,3 +293,7 @@ BraintreeDropIn.show({
 [5]:  ./index.js.flow
 [6]:  https://developers.braintreepayments.com/guides/apple-pay/configuration/ios/v4
 [7]:  https://articles.braintreepayments.com/guides/payment-methods/apple-pay#compatibility
+[8]:  https://developers.braintreepayments.com/guides/apple-pay/overview
+[9]:  https://developers.braintreepayments.com/guides/google-pay/overview
+[10]: https://developers.braintreepayments.com/guides/paypal/overview/ios/v4
+[11]: https://developers.braintreepayments.com/guides/venmo/overview
