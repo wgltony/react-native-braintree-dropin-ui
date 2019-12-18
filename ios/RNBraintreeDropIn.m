@@ -100,7 +100,7 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
                     } else{
                         [[self class] resolvePayment:result deviceData:self.deviceDataCollector resolver:resolve];
                     }
-                } else if(result.paymentMethod == nil && result.paymentOptionType == 16){ //Apple Pay
+                } else if(result.paymentMethod == nil && (result.paymentOptionType == 16 || result.paymentOptionType == 18)){ //Apple Pay
                     // UIViewController *ctrl = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
                     // [ctrl presentViewController:self.viewController animated:YES completion:nil];
                     UIViewController *rootViewController = RCTPresentedViewController();
