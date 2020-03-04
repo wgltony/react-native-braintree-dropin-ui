@@ -166,6 +166,7 @@ In your `AppDelegate.m`:
 
 ```objective-c
 #import "BraintreeCore.h"
+#import <React/RCTLinkingManager.h>
 
 ...
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

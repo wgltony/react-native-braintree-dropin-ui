@@ -1,5 +1,6 @@
 #import "RNBraintreeDropIn.h"
 #import <React/RCTUtils.h>
+#import "BTThreeDSecureRequest.h"
 
 @implementation RNBraintreeDropIn
 
@@ -13,7 +14,13 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
 {
 
     if([options[@"darkTheme"] boolValue]){
-        [BTUIKAppearance darkTheme];
+        if (@available(iOS 13.0, *)) {
+            BTUIKAppearance.sharedInstance.colorScheme = BTUIKColorSchemeDynamic;
+        } else {
+            BTUIKAppearance.sharedInstance.colorScheme = BTUIKColorSchemeDark;
+        }
+    } else {
+         BTUIKAppearance.sharedInstance.colorScheme = BTUIKColorSchemeLight;
     }
 
     self.resolve = resolve;
@@ -37,7 +44,8 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
         }
 
         request.threeDSecureVerification = YES;
-        request.amount = [threeDSecureAmount stringValue];
+        BTThreeDSecureRequest *threeDSecureRequest = [[BTThreeDSecureRequest alloc] init];
+        threeDSecureRequest.amount = [NSDecimalNumber decimalNumberWithString:threeDSecureAmount.stringValue];
     }
 
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:clientToken];
