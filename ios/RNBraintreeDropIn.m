@@ -65,7 +65,7 @@ if([options[@"darkTheme"] boolValue]){
         NSString* countryCode = options[@"countryCode"];
         NSString* currencyCode = options[@"currencyCode"];
         NSString* merchantName = options[@"merchantName"];
-        NSDecimalNumber* orderTotal = [NSDecimalNumber decimalNumberWithString:options[@"orderTotal"]];
+        NSDecimalNumber* orderTotal = [[NSDecimalNumber alloc] initWithDouble:options[@"orderTotal"] || 0];
         if(!merchantIdentifier || !countryCode || !currencyCode || !merchantName || !orderTotal){
             reject(@"MISSING_OPTIONS", @"Not all required Apple Pay options were provided", nil);
             return;
