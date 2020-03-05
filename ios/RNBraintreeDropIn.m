@@ -1,5 +1,6 @@
 #import "RNBraintreeDropIn.h"
 #import <React/RCTUtils.h>
+#import "BTThreeDSecureRequest.h"
 
 @implementation RNBraintreeDropIn
 
@@ -12,9 +13,15 @@ RCT_EXPORT_MODULE(RNBraintreeDropIn)
 RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
 
-    if([options[@"darkTheme"] boolValue]){
-        [BTUIKAppearance darkTheme];
+if([options[@"darkTheme"] boolValue]){
+    if (@available(iOS 13.0, *)) {
+        BTUIKAppearance.sharedInstance.colorScheme = BTUIKColorSchemeDynamic;
+    } else {
+        BTUIKAppearance.sharedInstance.colorScheme = BTUIKColorSchemeDark;
     }
+} else {
+        BTUIKAppearance.sharedInstance.colorScheme = BTUIKColorSchemeLight;
+}
 
     self.resolve = resolve;
     self.reject = reject;
@@ -37,7 +44,9 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
         }
 
         request.threeDSecureVerification = YES;
-        request.amount = [threeDSecureAmount stringValue];
+        BTThreeDSecureRequest *threeDSecureRequest = [[BTThreeDSecureRequest alloc] init];
+        threeDSecureRequest.amount = [NSDecimalNumber decimalNumberWithString:threeDSecureAmount.stringValue];
+        
     }
 
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:clientToken];
@@ -56,7 +65,7 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
         NSString* countryCode = options[@"countryCode"];
         NSString* currencyCode = options[@"currencyCode"];
         NSString* merchantName = options[@"merchantName"];
-        NSDecimalNumber* orderTotal = options[@"orderTotal"];
+        NSDecimalNumber* orderTotal = [NSDecimalNumber decimalNumberWithDecimal:[options[@"orderTotal"] decimalValue]];
         if(!merchantIdentifier || !countryCode || !currencyCode || !merchantName || !orderTotal){
             reject(@"MISSING_OPTIONS", @"Not all required Apple Pay options were provided", nil);
             return;
@@ -71,7 +80,7 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
         self.paymentRequest.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkDiscover, PKPaymentNetworkChinaUnionPay];
         self.paymentRequest.paymentSummaryItems =
             @[
-                [PKPaymentSummaryItem summaryItemWithLabel:merchantName amount:[NSDecimalNumber decimalNumberWithString:orderTotal]]
+                [PKPaymentSummaryItem summaryItemWithLabel:merchantName amount:orderTotal]
             ];
 
         self.viewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest: self.paymentRequest];
