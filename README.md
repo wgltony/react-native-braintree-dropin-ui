@@ -53,20 +53,20 @@ pod 'CardIO'
 When using React Native versions < 0.60, the following must also be added to your `Podfile`:
 
 ```
-pod 'Braintree' 
+pod 'Braintree'
 
 pod 'BraintreeDropIn'
 
- # comment the next line to disable Apple pay 
+ # comment the next line to disable Apple pay
 pod 'Braintree/Apple-Pay'
 
- # comment the next line to disable PayPal  
-pod 'Braintree/PayPal'  
+ # comment the next line to disable PayPal
+pod 'Braintree/PayPal'
 
- # comment the next line to disable Venmo 
-pod 'Braintree/Venmo' 
+ # comment the next line to disable Venmo
+pod 'Braintree/Venmo'
 
- # Data collector for Braintree Advanced Fraud Tools  
+ # Data collector for Braintree Advanced Fraud Tools
 pod 'Braintree/DataCollector'
 ```
 
@@ -116,8 +116,8 @@ If you wish to support Google Pay, add in your `AndroidManifest.xml`:
 
 ```
     <!-- Enables the Google Pay API -->
-    <meta-data 
-        android:name="com.google.android.gms.wallet.api.enabled" 
+    <meta-data
+        android:name="com.google.android.gms.wallet.api.enabled"
         android:value="true"/>
 ```
 
@@ -209,7 +209,7 @@ func application(_ app: UIApplication, open url: URL, options: [UIApplication.Op
     }
     return RCTLinkingManager.application(app, open: url, options: options)
 }
-    
+
 private var paymentsURLScheme: String {
     let bundleIdentifier = Bundle.main.bundleIdentifier ?? ""
     return bundleIdentifier + ".payments"
@@ -284,6 +284,14 @@ BraintreeDropIn.show({
   }
 });
 ```
+
+### Custom Fonts
+
+BraintreeDropIn.show({
+  ...
+  fontFamily: 'Averta-Regular',
+  boldFontFamily: 'Averta-Semibold',
+})
 
 [1]:  http://guides.cocoapods.org/using/using-cocoapods.html
 [2]:  https://github.com/braintree/braintree-ios-drop-in

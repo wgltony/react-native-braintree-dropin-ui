@@ -13,15 +13,22 @@ RCT_EXPORT_MODULE(RNBraintreeDropIn)
 RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
 
-if([options[@"darkTheme"] boolValue]){
-    if (@available(iOS 13.0, *)) {
-        BTUIKAppearance.sharedInstance.colorScheme = BTUIKColorSchemeDynamic;
+    if([options[@"darkTheme"] boolValue]){
+        if (@available(iOS 13.0, *)) {
+            BTUIKAppearance.sharedInstance.colorScheme = BTUIKColorSchemeDynamic;
+        } else {
+            BTUIKAppearance.sharedInstance.colorScheme = BTUIKColorSchemeDark;
+        }
     } else {
-        BTUIKAppearance.sharedInstance.colorScheme = BTUIKColorSchemeDark;
-    }
-} else {
         BTUIKAppearance.sharedInstance.colorScheme = BTUIKColorSchemeLight;
-}
+    }
+
+    if(options[@"fontFamily"]){
+        [BTUIKAppearance sharedInstance].fontFamily = options[@"fontFamily"];
+    }
+    if(options[@"boldFontFamily"]){
+        [BTUIKAppearance sharedInstance].boldFontFamily = options[@"boldFontFamily"];
+    }
 
     self.resolve = resolve;
     self.reject = reject;
