@@ -82,6 +82,17 @@ pod install
 
 The Drop-in will show Apple Pay as a payment option as long as you've completed the [Apple Pay integration][6] and the customer's [device and card type are supported][7].
 
+#### PayPal
+
+To enable paypal payments in iOS, you will need to add `setReturnURLScheme` to `launchOptions` of your `AppDelegate.m`
+
+```objective-c
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [BTAppSwitch setReturnURLScheme:@"com.your-company-name.your-app-name.payments"]; // ADD THIS LINE 
+    return YES;
+}
+```
+
 #### Android specific
 
 Note: Only complete these steps if using React Native versions < 0.60, autolinking will do these steps automatically.
@@ -283,17 +294,6 @@ BraintreeDropIn.show({
     // for 3D secure, there are two other specific error codes: 3DSECURE_NOT_ABLE_TO_SHIFT_LIABILITY and 3DSECURE_LIABILITY_NOT_SHIFTED
   }
 });
-```
-
-### PayPal
-
-To enable paypal payments in iOS, you will need to add `setReturnURLScheme` to `launchOptions` of your `AppDelegate.m`
-
-```objective-c
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [BTAppSwitch setReturnURLScheme:@"com.your-company-name.your-app-name.payments"]; // ADD THIS LINE 
-    return YES;
-}
 ```
 
 ### Custom Fonts
