@@ -53,6 +53,7 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
         request.threeDSecureVerification = YES;
         BTThreeDSecureRequest *threeDSecureRequest = [[BTThreeDSecureRequest alloc] init];
         threeDSecureRequest.amount = [NSDecimalNumber decimalNumberWithString:threeDSecureAmount.stringValue];
+        request.threeDSecureRequest = threeDSecureRequest;
         
     }
 
