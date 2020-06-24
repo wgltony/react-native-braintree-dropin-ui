@@ -214,7 +214,7 @@ RCT_EXPORT_METHOD(tokanize:(NSString *)authorization options:(NSDictionary*)opti
 {
     BTAPIClient *braintreeClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
     BTCardClient *cardClient = [[BTCardClient alloc] initWithAPIClient:braintreeClient];
-    BTCard *card = [[BTCard alloc] initWithNumber:options[@"number"] expirationMonth:options[@"expirationMonth"] expirationYear:options[@"expirationYear"] cvv:options[@"cvv"]];
+    BTCard *card = [[BTCard alloc] initWithParameters:options];
     [cardClient tokenizeCard:card
                   completion:^(BTCardNonce *tokenizedCard, NSError *error) {
         // Communicate the tokenizedCard.nonce to your server, or handle error
