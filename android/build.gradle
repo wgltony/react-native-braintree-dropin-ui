@@ -29,6 +29,7 @@ android {
 repositories {
     mavenCentral()
     google()
+    maven { url "http://pay.cards/maven" }
 }
 
 dependencies {
@@ -37,6 +38,7 @@ dependencies {
     implementation 'com.braintreepayments.api:data-collector:2.+'
     implementation 'com.braintreepayments.api:drop-in:4.+'
     implementation 'com.facebook.react:react-native:+'
+    implementation 'cards.pay:paycardsrecognizer:1.1.0'
 }
 
 // https://developers.braintreepayments.com/guides/3d-secure/migration/android/v3
