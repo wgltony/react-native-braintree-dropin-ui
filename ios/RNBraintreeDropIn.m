@@ -214,7 +214,7 @@ RCT_EXPORT_METHOD(tokanize:(NSString *)authorization options:(NSDictionary*)opti
 {
     BTAPIClient *braintreeClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
     BTCardClient *cardClient = [[BTCardClient alloc] initWithAPIClient:braintreeClient];
-    BTCard *card = [[BTCard alloc] initWithParameters:options];
+    BTCard *card = [[BTCard alloc] initWithNumber:options[@"number"] expirationMonth:options[@"expirationMonth"] expirationYear:options[@"expirationYear"] cvv:options[@"cvv"]];
     [cardClient tokenizeCard:card
                   completion:^(BTCardNonce *tokenizedCard, NSError *error) {
         // Communicate the tokenizedCard.nonce to your server, or handle error
@@ -223,9 +223,9 @@ RCT_EXPORT_METHOD(tokanize:(NSString *)authorization options:(NSDictionary*)opti
             [result setObject:tokenizedCard.nonce forKey:@"nonce"];
             resolve(result);
         } else {
-            NSMutableDictionary* result = [NSMutableDictionary new];
-            [result setObject:error forKey:@"error"];
-            reject([NSString stringWithFormat:@"%ld", (long)error.code], @"error", error);
+//            NSMutableDictionary* result = [NSMutableDictionary new];
+//            [result setObject:error forKey:@"error"];
+            reject(@"0", @"error", error);
         }
     }];
 }
