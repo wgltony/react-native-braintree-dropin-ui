@@ -210,7 +210,7 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
 }
 
 
-RCT_EXPORT_METHOD(tokanize:(NSString *)authorization options:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(tokenize:(NSString *)authorization options:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     BTAPIClient *braintreeClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
     BTCardClient *cardClient = [[BTCardClient alloc] initWithAPIClient:braintreeClient];

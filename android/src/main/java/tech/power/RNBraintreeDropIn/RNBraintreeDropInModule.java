@@ -135,7 +135,7 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void tokanize(String authorization, final ReadableMap parameters, final Promise promise) {
+  public void tokenize(String authorization, final ReadableMap parameters, final Promise promise) {
     setup(authorization, promise);
 
     CardBuilder cardBuilder = new CardBuilder()
