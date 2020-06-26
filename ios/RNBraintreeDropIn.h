@@ -11,30 +11,34 @@
 #import "BraintreeDropIn.h"
 #import "BTCardNonce.h"
 #import "BTDataCollector.h"
-
+#import "BraintreePayPal.h"
 #import "BraintreeApplePay.h"
 
 @interface RNBraintreeDropIn : NSObject <RCTBridgeModule>
 
-@property (nonatomic, strong) UIViewController *_Nonnull reactRoot;
+@property(nonatomic, strong) UIViewController *_Nonnull reactRoot;
 
 // Retain your `BTDataCollector` instance for your entire application lifecycle.
-@property (nonatomic, strong) BTDataCollector *_Nonnull dataCollector;
+@property(nonatomic, strong) BTDataCollector *_Nonnull dataCollector;
 
-@property (nonatomic, strong) BTAPIClient *_Nonnull braintreeClient;
+@property(nonatomic, strong) BTAPIClient *_Nonnull braintreeClient;
 
-@property (nonatomic, strong) PKPaymentRequest *_Nonnull paymentRequest;
+@property(nonatomic, strong) BTPayPalDriver *_Nonnull payPalDriver;
 
-@property (nonatomic, strong) PKPaymentAuthorizationViewController *_Nonnull viewController;
+@property(nonatomic, strong) PKPaymentRequest *_Nonnull paymentRequest;
 
-@property (nonatomic, strong) NSString * _Nonnull deviceDataCollector;
+@property(nonatomic, strong) PKPaymentAuthorizationViewController *_Nonnull viewController;
 
-@property (nonatomic) RCTPromiseResolveBlock _Nonnull resolve;
+@property(nonatomic, strong) NSString *_Nonnull deviceDataCollector;
 
-@property (nonatomic) RCTPromiseRejectBlock _Nonnull reject;
+@property(nonatomic) RCTPromiseResolveBlock _Nonnull resolve;
 
-@property (nonatomic, assign) BOOL *_Nonnull applePayAuthorized;
+@property(nonatomic) RCTPromiseRejectBlock _Nonnull reject;
 
-+ (void)resolvePayment:(BTDropInResult* _Nullable)result deviceData:(NSString * _Nonnull)deviceDataCollector resolver:(RCTPromiseResolveBlock _Nonnull)resolve;
+@property(nonatomic, assign) BOOL *_Nonnull applePayAuthorized;
+
++ (void)resolvePayment:(BTDropInResult *_Nullable)result deviceData:(NSString *_Nonnull)deviceDataCollector resolver:(RCTPromiseResolveBlock _Nonnull)resolve;
+
++ (void)resolvePayPalLogin:(BTPayPalAccountNonce *_Nullable)result deviceData:(NSString *_Nonnull)deviceDataCollector resolver:(RCTPromiseResolveBlock _Nonnull)resolve;
 
 @end
