@@ -14,6 +14,7 @@ Pod::Spec.new do |s|
   s.source_files  = "*.{h,m,swift}"
   s.requires_arc = true
   s.dependency    'React'
+  s.swift_version = '5.0'
   s.dependency    'Braintree'
   s.dependency    'BraintreeDropIn'
   s.dependency    'Braintree/DataCollector'
