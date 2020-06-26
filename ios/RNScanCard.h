@@ -13,7 +13,7 @@
 #else
 #import <React/RCTBridgeModule.h>
 #endif
-#import <RNBraintreeDropIn-swift.h>
+#import <RNBraintreeDropIn/RNBraintreeDropIn-swift.h>
 
 @interface RNScanCard : NSObject <RCTBridgeModule>
 @end
