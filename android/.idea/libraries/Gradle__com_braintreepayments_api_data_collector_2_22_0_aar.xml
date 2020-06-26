@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.braintreepayments.api:data-collector:2.22.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8616bc0721b0c3b9dbba9fcbc34b4f8e/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8616bc0721b0c3b9dbba9fcbc34b4f8e/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8616bc0721b0c3b9dbba9fcbc34b4f8e/jars/libs/kount-data-collector-3.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.api/data-collector/2.22.0/149bd050510b2c7ffc8678a83069382ceb61e290/data-collector-2.22.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -24,11 +24,18 @@ android {
     lintOptions {
         abortOnError false
     }
+    packagingOptions {
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+    }
 }
 
 repositories {
     mavenCentral()
     google()
+    maven { url "http://pay.cards/maven" }
 }
 
 dependencies {
@@ -38,6 +45,7 @@ dependencies {
     implementation 'com.braintreepayments.api:drop-in:4.+'
     implementation 'com.facebook.react:react-native:+'
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'cards.pay:paycardsrecognizer:1.1.0'
 }
 
 // https://developers.braintreepayments.com/guides/3d-secure/migration/android/v3
