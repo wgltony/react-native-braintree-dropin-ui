@@ -83,7 +83,6 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
       this.mBraintreeFragment.addListener(new PaymentMethodNonceCreatedListener() {
         @Override
         public void onPaymentMethodNonceCreated(PaymentMethodNonce paymentMethodNonce) {
-          Log.d("Naveen", "onPaymentMethodNonceCreated: " + paymentMethodNonce);
           resolvePayment(paymentMethodNonce, null);
         }
       });
@@ -92,7 +91,6 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
         public void onError(Exception error) {
           if (error instanceof ErrorWithResponse) {
             ErrorWithResponse errorWithResponse = (ErrorWithResponse) error;
-            Log.d("Naveen", "onError: " + errorWithResponse.getMessage());
           }
         }
       });
@@ -112,6 +110,7 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
     mPromise.resolve(jsResult);
   }
 
+  @ReactMethod
   public void paypalLogin(final ReadableMap options, final Promise promise) {
     if (!options.hasKey("clientToken")) {
       promise.reject("NO_CLIENT_TOKEN", "You must provide a client token");
