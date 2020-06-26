@@ -1,6 +1,9 @@
 #import "RNBraintreeDropIn.h"
 #import <React/RCTUtils.h>
 #import "BTThreeDSecureRequest.h"
+#import "BTCard.h"
+#import "BTCardClient.h"
+#import "BTAPIClient.h"
 
 @implementation RNBraintreeDropIn
 
