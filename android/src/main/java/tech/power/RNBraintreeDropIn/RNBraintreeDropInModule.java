@@ -101,6 +101,17 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
     }
   }
 
+  private final void resolvePayment(PaymentMethodNonce paymentMethodNonce, String deviceData) {
+    WritableMap jsResult = Arguments.createMap();
+    jsResult.putString("nonce", paymentMethodNonce.getNonce());
+    jsResult.putString("type", paymentMethodNonce.getTypeLabel());
+    jsResult.putString("description", paymentMethodNonce.getDescription());
+    jsResult.putBoolean("isDefault", paymentMethodNonce.isDefault());
+    jsResult.putString("deviceData", deviceData);
+
+    mPromise.resolve(jsResult);
+  }
+
   public void paypalLogin(final ReadableMap options, final Promise promise) {
     if (!options.hasKey("clientToken")) {
       promise.reject("NO_CLIENT_TOKEN", "You must provide a client token");
