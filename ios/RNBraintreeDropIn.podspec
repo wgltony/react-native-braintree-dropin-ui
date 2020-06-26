@@ -21,4 +21,5 @@ Pod::Spec.new do |s|
   s.dependency    'Braintree/Apple-Pay'
   s.dependency    'Braintree/Venmo'
   s.dependency    'PayCardsRecognizer', '1.1.7'
+  s.static_framework = true
 end
