@@ -262,20 +262,59 @@ RCT_EXPORT_METHOD(tokenize:(NSString *)authorization options:(NSDictionary*)opti
 {
     BTAPIClient *braintreeClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
     BTCardClient *cardClient = [[BTCardClient alloc] initWithAPIClient:braintreeClient];
-    BTCard *card = [[BTCard alloc] initWithParameters:options];
-    [cardClient tokenizeCard:card
-                  completion:^(BTCardNonce *tokenizedCard, NSError *error) {
-        // Communicate the tokenizedCard.nonce to your server, or handle error
-        if (!error) {
-            NSMutableDictionary* result = [NSMutableDictionary new];
-            [result setObject:tokenizedCard.nonce forKey:@"nonce"];
-            resolve(result);
-        } else {
-//            NSMutableDictionary* result = [NSMutableDictionary new];
-//            [result setObject:error forKey:@"error"];
-            reject(@"0", @"error", error);
-        }
-    }];
+    BTCard *card = [[BTCard alloc] initWithNumber:options[@"number"] expirationMonth:options[@"expirationMonth"] expirationYear:options[@"expirationYear"] cvv:options[@"cvv"]];
+    
+    if (options[@"cardholderName"])
+        card.cardholderName = options[@"cardholderName"];
+
+    if (options[@"firstName"])
+        card.firstName = options[@"firstName"];
+
+    if (options[@"lastName"])
+        card.lastName = options[@"lastName"];
+
+    if (options[@"company"])
+        card.company = options[@"company"];
+    
+    if (options[@"locality"])
+        card.locality = options[@"locality"];
+
+    if (options[@"postalCode"])
+        card.postalCode = options[@"postalCode"];
+
+    if (options[@"region"])
+        card.region = options[@"region"];
+
+    if (options[@"streetAddress"])
+        card.streetAddress = options[@"streetAddress"];
+
+    if (options[@"extendedAddress"])
+        card.extendedAddress = options[@"extendedAddress"];
+
+    if (options[@"shouldValidate"])
+        card.shouldValidate = options[@"shouldValidate"];
+    
+    if (options[@"merchantAccountId"])
+        card.merchantAccountId = options[@"merchantAccountId"];
+    
+    if (authorization == nil || braintreeClient == nil || cardClient == nil || card == nil) {
+        NSError * err = [NSError errorWithDomain:@"BraintreeAuth" code:01 userInfo:@{@"message": @"Auth not valid"}];
+        reject(@"01", @"Auth not valid", err);
+    } else {
+        [cardClient tokenizeCard:card
+                      completion:^(BTCardNonce *tokenizedCard, NSError *error) {
+            if (!error) {
+                NSMutableDictionary* result = [NSMutableDictionary new];
+                [result setObject:tokenizedCard.nonce forKey:@"nonce"];
+                [result setObject:[NSString stringWithFormat: @"%@ %@", @"", tokenizedCard.type] forKey:@"description"];
+                [result setObject:[NSNumber numberWithBool:false] forKey:@"isDefault"];
+                [result setObject:self.deviceDataCollector forKey:@"deviceData"];
+                resolve(result);
+            } else {
+                reject(@"0", @"Card details not valid", error);
+            }
+        }];
+    }
 }
 
 @end
