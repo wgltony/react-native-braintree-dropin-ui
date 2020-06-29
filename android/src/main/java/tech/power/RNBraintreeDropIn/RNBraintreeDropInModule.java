@@ -254,6 +254,12 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
     if (parameters.hasKey("extendedAddress"))
       cardBuilder.extendedAddress(parameters.getString("extendedAddress"));
 
+    if (parameters.hasKey("merchantAccountId"))
+      cardBuilder.merchantAccountId(parameters.getString("merchantAccountId"));
+
+    if (parameters.hasKey("countryCode"))
+      cardBuilder.countryCode(parameters.getString("countryCode"));
+
     Card.tokenize(this.mBraintreeFragment, cardBuilder);
   }
 

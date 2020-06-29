@@ -297,6 +297,18 @@ RCT_EXPORT_METHOD(tokenize:(NSString *)authorization options:(NSDictionary*)opti
     if (options[@"merchantAccountId"])
         card.merchantAccountId = options[@"merchantAccountId"];
     
+    if (options[@"countryName"])
+        card.countryName = options[@"countryName"];
+    
+    if (options[@"countryCodeAlpha2"])
+        card.countryCodeAlpha2 = options[@"countryCodeAlpha2"];
+    
+    if (options[@"countryCodeAlpha3"])
+        card.countryCodeAlpha3 = options[@"countryCodeAlpha3"];
+    
+    if (options[@"countryCodeNumeric"])
+        card.countryCodeNumeric = options[@"countryCodeNumeric"];
+    
     if (authorization == nil || braintreeClient == nil || cardClient == nil || card == nil) {
         NSError * err = [NSError errorWithDomain:@"BraintreeAuth" code:01 userInfo:@{@"message": @"Auth not valid"}];
         reject(@"01", @"Auth not valid", err);
