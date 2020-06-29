@@ -61,11 +61,19 @@
 				5F7BACDF24A5D59F007DE189 /* RNScanCardViewController.swift */,
 				5F7BACDA24A5D577007DE189 /* RNScanCard.h */,
 				5F7BACDB24A5D577007DE189 /* RNScanCard.m */,
+				5FFBF03324A9CC8700CE9E7A /* RNBraintreeDropIn */,
 				B3E7B5881CC2AC0600A0062D /* RNBraintreeDropIn.h */,
 				B3E7B5891CC2AC0600A0062D /* RNBraintreeDropIn.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
 				5F7BACDE24A5D59F007DE189 /* RNBraintreeDropIn-Bridging-Header.h */,
 			);
+			sourceTree = "<group>";
+		};
+		5FFBF03324A9CC8700CE9E7A /* RNBraintreeDropIn */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = RNBraintreeDropIn;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
