@@ -1,4 +1,4 @@
-#import "RNScanCard.h"
+#import "RNScanCardClass.h"
 #import <React/RCTUtils.h>
 
 @implementation RNScanCard
