@@ -58,9 +58,6 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				5F7BACDF24A5D59F007DE189 /* RNScanCardViewController.swift */,
-				5F7BACDA24A5D577007DE189 /* RNScanCard.h */,
-				5F7BACDB24A5D577007DE189 /* RNScanCard.m */,
 				5FFBF03324A9CC8700CE9E7A /* RNBraintreeDropIn */,
 				B3E7B5881CC2AC0600A0062D /* RNBraintreeDropIn.h */,
 				B3E7B5891CC2AC0600A0062D /* RNBraintreeDropIn.m */,
@@ -72,6 +69,9 @@
 		5FFBF03324A9CC8700CE9E7A /* RNBraintreeDropIn */ = {
 			isa = PBXGroup;
 			children = (
+				5F7BACDF24A5D59F007DE189 /* RNScanCardViewController.swift */,
+				5F7BACDA24A5D577007DE189 /* RNScanCard.h */,
+				5F7BACDB24A5D577007DE189 /* RNScanCard.m */,
 			);
 			path = RNBraintreeDropIn;
 			sourceTree = "<group>";
