@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="Gradle: cards.pay:paycardsrecognizer:1.1.0@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ef9fd8b13f89bdef2eb0a8d88596b15b/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ef9fd8b13f89bdef2eb0a8d88596b15b/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ef9fd8b13f89bdef2eb0a8d88596b15b/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/cards.pay/paycardsrecognizer/1.1.0/fcd84ffd66cc0a4d37fbf89df4f76da45fe207f5/paycardsrecognizer-1.1.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/cards.pay/paycardsrecognizer/1.1.0/47701f01b615b92e1e850638cf5fa103ec617a05/paycardsrecognizer-1.1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

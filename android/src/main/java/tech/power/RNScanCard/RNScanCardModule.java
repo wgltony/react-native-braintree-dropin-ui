@@ -20,10 +20,12 @@ public class RNScanCardModule extends ReactContextBaseJavaModule {
 
   static final int REQUEST_CODE_SCAN_CARD = 999;
 
-  RNScanCardModule(ReactApplicationContext reactContext) {
+  public RNScanCardModule(ReactApplicationContext reactContext) {
     super(reactContext);
     reactContext.addActivityEventListener(mActivityListener);
   }
+
+
 
   @ReactMethod
   public void show(final Promise promise) {
@@ -45,14 +47,14 @@ public class RNScanCardModule extends ReactContextBaseJavaModule {
       super.onActivityResult(requestCode, resultCode, data);
 
       if (requestCode != REQUEST_CODE_SCAN_CARD || mPromise == null) {
-        mPromise.reject("WRONG_REQUEST_CODE", "Wrong request code");;
+        mPromise.reject("WRONG_REQUEST_CODE", "Wrong request code");
       }
 
       if (requestCode == REQUEST_CODE_SCAN_CARD) {
         if (resultCode == Activity.RESULT_OK) {
           Card card = data.getParcelableExtra(ScanCardIntent.RESULT_PAYCARDS_CARD);
           String cardData = "Card number: " + card.getCardNumberRedacted() + "\n" + "Card holder: "
-                  + card.getCardHolderName() + "\n" + "Card expiration date: " + card.getExpirationDate();
+              + card.getCardHolderName() + "\n" + "Card expiration date: " + card.getExpirationDate();
           resolveCard(card);
         } else if (resultCode == Activity.RESULT_CANCELED) {
           mPromise.reject("CANCELLED_BY_USER", "Cancelled by user");
@@ -80,5 +82,3 @@ public class RNScanCardModule extends ReactContextBaseJavaModule {
     return "RNScanCard";
   }
 }
-
-
