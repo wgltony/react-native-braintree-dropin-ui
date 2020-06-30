@@ -67,6 +67,8 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
           .googleMerchantId(options.getString("googlePayMerchantId"));
 
       dropInRequest.googlePaymentRequest(googlePaymentRequest);
+    }else{
+        dropInRequest.disableGooglePayment();
     }
 
 
