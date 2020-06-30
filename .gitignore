@@ -30,6 +30,11 @@ build/
 local.properties
 *.iml
 
+android/
+.gradle
+.settings
+.idea
+
 # node.js
 #
 node_modules/
