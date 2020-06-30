@@ -1,13 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: com.braintreepayments.api:drop-in:4.6.0@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2c79864f1010af8b376bf7e6c743bb22/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/da3d4acb75974a68d8a72517a9fe7df7/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2c79864f1010af8b376bf7e6c743bb22/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2c79864f1010af8b376bf7e6c743bb22/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/da3d4acb75974a68d8a72517a9fe7df7/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/da3d4acb75974a68d8a72517a9fe7df7/res" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.api/drop-in/4.6.0/3c083ccb2a477c05bd38706d53975fc94a1b7783/drop-in-4.6.0-javadoc.jar!/" />
+    </JAVADOC>
     <SOURCES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.api/drop-in/4.6.0/4b466fc956aa238cd356318146371eaa4df539e9/drop-in-4.6.0-sources.jar!/" />
     </SOURCES>

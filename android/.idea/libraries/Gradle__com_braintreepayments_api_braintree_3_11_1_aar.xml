@@ -1,13 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: com.braintreepayments.api:braintree:3.11.1@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6743207b5d478cffafccc28ee08e5769/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b9a83524e5621766d3bb2c20d44649db/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6743207b5d478cffafccc28ee08e5769/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6743207b5d478cffafccc28ee08e5769/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b9a83524e5621766d3bb2c20d44649db/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b9a83524e5621766d3bb2c20d44649db/res" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.api/braintree/3.11.1/8d21546e97c5f57940ec70bfc7940562e8806a8c/braintree-3.11.1-javadoc.jar!/" />
+    </JAVADOC>
     <SOURCES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.api/braintree/3.11.1/e0e50c2f6e89ea304548e87c5d7224609623c8a4/braintree-3.11.1-sources.jar!/" />
     </SOURCES>
