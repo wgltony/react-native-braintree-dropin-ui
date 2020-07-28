@@ -252,6 +252,7 @@ BraintreeDropIn.show({
   googlePay: true,
   applePay: true,
   vaultManager: true,
+  cardDisabled: false,
   darkTheme: true,
 })
 .then(result => console.log(result))
@@ -283,6 +284,7 @@ BraintreeDropIn.show({
   googlePay: true,
   applePay: true,
   vaultManager: true,
+  cardDisabled: false,
   darkTheme: true,
 })
 .then(result => console.log(result))
