@@ -71,6 +71,9 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
         dropInRequest.disableGooglePayment();
     }
 
+    if(options.hasKey("cardDisabled")) {
+      dropInRequest.disableCard();
+    }
 
     if (options.hasKey("threeDSecure")) {
       final ReadableMap threeDSecureOptions = options.getMap("threeDSecure");

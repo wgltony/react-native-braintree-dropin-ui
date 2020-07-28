@@ -54,7 +54,7 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
         BTThreeDSecureRequest *threeDSecureRequest = [[BTThreeDSecureRequest alloc] init];
         threeDSecureRequest.amount = [NSDecimalNumber decimalNumberWithString:threeDSecureAmount.stringValue];
         request.threeDSecureRequest = threeDSecureRequest;
-        
+
     }
 
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:clientToken];
@@ -66,6 +66,10 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
 
     if([options[@"vaultManager"] boolValue]){
         request.vaultManager = YES;
+    }
+
+    if([options[@"cardDisabled"] boolValue]){
+        request.cardDisabled = YES;
     }
 
     if([options[@"applePay"] boolValue]){
