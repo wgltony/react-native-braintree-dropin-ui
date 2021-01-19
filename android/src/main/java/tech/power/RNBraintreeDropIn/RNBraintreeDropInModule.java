@@ -88,6 +88,10 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
       .amount(String.valueOf(threeDSecureOptions.getDouble("amount")))
       .requestThreeDSecureVerification(true);
     }
+    
+    if(!options.getBoolean("payPal")){ //disable paypal
+      dropInRequest.disablePayPal();
+    }
 
     mPromise = promise;
     currentActivity.startActivityForResult(dropInRequest.getIntent(currentActivity), DROP_IN_REQUEST);
