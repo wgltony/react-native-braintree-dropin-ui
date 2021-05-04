@@ -273,7 +273,19 @@ import BraintreeDropIn from 'react-native-braintree-dropin-ui';
 BraintreeDropIn.show({
   clientToken: 'token',
   threeDSecure: {
-    amount: 1.0,
+    amount: 1.0, //required
+    email: 'customer.email@test.com', //optional
+    billingAddress: { //optional
+      givenName:"Joe",
+      surname:"Guy",
+      phoneNumber:"12345678",
+      streetAddress:"555 Smith St.",
+      extendedAddress:"#5",
+      locality:"Oakland",
+      region:"CA",
+      countryCodeAlpha2:"US",
+      postalCode:"54321"
+    }
   },
   merchantIdentifier: 'applePayMerchantIdentifier',
   googlePayMerchantId: 'googlePayMerchantId',
