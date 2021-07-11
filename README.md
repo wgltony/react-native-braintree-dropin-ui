@@ -1,3 +1,10 @@
+## This version contains updated BraintreeDropIn 5.+
+
+BraintreeDropIn 5.0.2 contains some security fixes that resolves Play store rejection fix. Read more - 
+
+Unsafe implementation of the HostnameVerifier interface - vulnerability ( https://github.com/braintree/braintree-android-drop-in/issues/208 )
+
+
 # react-native-braintree-dropin-ui
 
 > React Native integration of Braintree Drop-in for IOS & ANDROID (Apple Pay, Google Pay, Paypal, Venmo, Credit Card)
