@@ -38,7 +38,7 @@ react-native link react-native-braintree-dropin-ui
 
 #### iOS specific
 
-You must have a iOS deployment target \>= 9.0.
+You must have a iOS deployment target \>= 12.0.
 
 If you don't have a Podfile or are unsure on how to proceed, see the [CocoaPods][1] usage guide.
 
