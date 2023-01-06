@@ -29,11 +29,7 @@ import com.google.android.gms.wallet.WalletConstants;
 import java.util.Objects;
 
 public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
-
-  private Promise mPromise;
-
   private boolean isVerifyingThreeDSecure = false;
-
   private static DropInClient dropInClient = null;
   private static String clientToken = null;
 
@@ -109,83 +105,97 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
 
     dropInRequest.setPayPalDisabled(!options.hasKey("payPal") || !options.getBoolean("payPal"));
 
-    mPromise = promise;
-
     clientToken = options.getString("clientToken");
 
     if (dropInClient == null) {
-      mPromise.reject(
+      promise.reject(
         "DROP_IN_CLIENT_UNINITIALIZED",
         "Did you forget to call RNBraintreeDropInModule.initDropInClient(this) in MainActivity.onCreate?"
       );
-      mPromise = null;
       return;
     }
-    dropInClient.setListener(mDropInListener);
+    dropInClient.setListener(new DropInListener() {
+      @Override
+      public void onDropInSuccess(@NonNull DropInResult dropInResult) {
+        PaymentMethodNonce paymentMethodNonce = dropInResult.getPaymentMethodNonce();
+
+        if (isVerifyingThreeDSecure && paymentMethodNonce instanceof CardNonce) {
+          CardNonce cardNonce = (CardNonce) paymentMethodNonce;
+          ThreeDSecureInfo threeDSecureInfo = cardNonce.getThreeDSecureInfo();
+          if (!threeDSecureInfo.isLiabilityShiftPossible()) {
+            promise.reject("3DSECURE_NOT_ABLE_TO_SHIFT_LIABILITY", "3D Secure liability cannot be shifted");
+          } else if (!threeDSecureInfo.isLiabilityShifted()) {
+            promise.reject("3DSECURE_LIABILITY_NOT_SHIFTED", "3D Secure liability was not shifted");
+          } else {
+            resolvePayment(dropInResult, promise);
+          }
+        } else {
+          resolvePayment(dropInResult, promise);
+        }
+      }
+
+      @Override
+      public void onDropInFailure(@NonNull Exception exception) {
+        if (exception instanceof UserCanceledException) {
+          promise.reject("USER_CANCELLATION", "The user cancelled");
+        } else {
+          promise.reject(exception.getMessage(), exception.getMessage());
+        }
+      }
+    });
     dropInClient.launchDropIn(dropInRequest);
   }
 
-  private final DropInListener mDropInListener = new DropInListener() {
-    @Override
-    public void onDropInSuccess(@NonNull DropInResult dropInResult) {
-      if (mPromise == null) {
-        return;
-      }
-      PaymentMethodNonce paymentMethodNonce = dropInResult.getPaymentMethodNonce();
-      String deviceData = dropInResult.getDeviceData();
+  @ReactMethod
+  public void fetchMostRecentPaymentMethod(final String clientToken, final Promise promise) {
+    FragmentActivity currentActivity = (FragmentActivity) getCurrentActivity();
 
-      if (isVerifyingThreeDSecure && paymentMethodNonce instanceof CardNonce) {
-        CardNonce cardNonce = (CardNonce) paymentMethodNonce;
-        ThreeDSecureInfo threeDSecureInfo = cardNonce.getThreeDSecureInfo();
-        if (!threeDSecureInfo.isLiabilityShiftPossible()) {
-          mPromise.reject("3DSECURE_NOT_ABLE_TO_SHIFT_LIABILITY", "3D Secure liability cannot be shifted");
-        } else if (!threeDSecureInfo.isLiabilityShifted()) {
-          mPromise.reject("3DSECURE_LIABILITY_NOT_SHIFTED", "3D Secure liability was not shifted");
-        } else {
-          resolvePayment(dropInResult, deviceData);
-        }
-      } else {
-        resolvePayment(dropInResult, deviceData);
-      }
-
-      mPromise = null;
+    if (currentActivity == null) {
+      promise.reject("NO_ACTIVITY", "There is no current activity");
+      return;
     }
 
-    @Override
-    public void onDropInFailure(@NonNull Exception exception) {
-      if (mPromise == null) {
-        return;
-      }
-
-      if (exception instanceof UserCanceledException) {
-        mPromise.reject("USER_CANCELLATION", "The user cancelled");
-      } else {
-        mPromise.reject(exception.getMessage(), exception.getMessage());
-      }
-
-      mPromise = null;
+    if (dropInClient == null) {
+      promise.reject(
+        "DROP_IN_CLIENT_UNINITIALIZED",
+        "Did you forget to call RNBraintreeDropInModule.initDropInClient(this) in MainActivity.onCreate?"
+      );
+      return;
     }
-  };
 
-  private void resolvePayment(DropInResult dropInResult, String deviceData) {
+    RNBraintreeDropInModule.clientToken = clientToken;
+
+    dropInClient.fetchMostRecentPaymentMethod(currentActivity, (dropInResult, error) -> {
+      if (error != null) {
+        promise.reject(error.getMessage(), error.getMessage());
+      } else if (dropInResult == null) {
+        promise.reject("NO_DROP_IN_RESULT", "dropInResult is null");
+      } else {
+        resolvePayment(dropInResult, promise);
+      }
+    });
+  }
+
+  private void resolvePayment(DropInResult dropInResult, Promise promise) {
+    String deviceData = dropInResult.getDeviceData();
     PaymentMethodNonce paymentMethodNonce = dropInResult.getPaymentMethodNonce();
 
     WritableMap jsResult = Arguments.createMap();
 
     if (paymentMethodNonce == null) {
-      mPromise.reject("NO_PAYMENT_METHOD_NONCE", "Payment method nonce is missing");
+      promise.reject("NO_PAYMENT_METHOD_NONCE", "Payment method nonce is missing");
       return;
     }
 
     Activity currentActivity = getCurrentActivity();
     if (currentActivity == null) {
-      mPromise.reject("NO_ACTIVITY", "There is no current activity");
+      promise.reject("NO_ACTIVITY", "There is no current activity");
       return;
     }
 
     DropInPaymentMethod dropInPaymentMethod = dropInResult.getPaymentMethodType();
     if (dropInPaymentMethod == null) {
-      mPromise.reject("NO_PAYMENT_METHOD", "There is no payment method");
+      promise.reject("NO_PAYMENT_METHOD", "There is no payment method");
       return;
     }
 
@@ -195,7 +205,7 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
     jsResult.putBoolean("isDefault", paymentMethodNonce.isDefault());
     jsResult.putString("deviceData", deviceData);
 
-    mPromise.resolve(jsResult);
+    promise.resolve(jsResult);
   }
 
   @NonNull

@@ -311,6 +311,18 @@ BraintreeDropIn.show({
 });
 ```
 
+### Fetch more recent payment method
+
+```javascript
+import BraintreeDropIn from 'react-native-braintree-dropin-ui';
+
+BraintreeDropIn.fetchMostRecentPaymentMethod(clientToken)
+.then(result => console.log(result))
+.catch((error) => {
+  // Handle error
+});
+```
+
 ### Custom Fonts
 ```
 BraintreeDropIn.show({

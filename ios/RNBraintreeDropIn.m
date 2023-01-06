@@ -146,6 +146,21 @@ RCT_EXPORT_METHOD(show:(NSDictionary*)options resolver:(RCTPromiseResolveBlock)r
     }
 }
 
+RCT_EXPORT_METHOD(fetchMostRecentPaymentMethod:(NSString*)clientToken
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+  [BTDropInResult mostRecentPaymentMethodForClientToken:clientToken completion:^(BTDropInResult * _Nullable result, NSError * _Nullable error) {
+    if (error != nil) {
+        reject(error.localizedDescription, error.localizedDescription, error);
+    } else if (result.canceled) {
+        reject(@"USER_CANCELLATION", @"The user cancelled", nil);
+    } else {
+      [[self class] resolvePayment:result deviceData:result.deviceData resolver:resolve];
+    }
+  }];
+}
+
 - (void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller
                        didAuthorizePayment:(PKPayment *)payment
                                 handler:(nonnull void (^)(PKPaymentAuthorizationResult * _Nonnull))completion
