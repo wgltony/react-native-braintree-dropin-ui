@@ -323,6 +323,24 @@ BraintreeDropIn.fetchMostRecentPaymentMethod(clientToken)
 });
 ```
 
+### Tokenize card
+
+```javascript
+import BraintreeDropIn from 'react-native-braintree-dropin-ui';
+
+BraintreeDropIn.tokenizeCard(clientToken, {
+  number: '4111111111111111',
+  expirationMonth: '10',
+  expirationYear: '23',
+  cvv: '123',
+  postalCode: '12345',
+})
+.then(cardNonce => console.log(cardNonce))
+.catch((error) => {
+  // Handle error
+});
+```
+
 ### Custom Fonts
 ```
 BraintreeDropIn.show({

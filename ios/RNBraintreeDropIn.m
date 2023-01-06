@@ -161,6 +161,41 @@ RCT_EXPORT_METHOD(fetchMostRecentPaymentMethod:(NSString*)clientToken
   }];
 }
 
+RCT_EXPORT_METHOD(tokenizeCard:(NSString*)clientToken
+                          info:(NSDictionary*)cardInfo
+                      resolver:(RCTPromiseResolveBlock)resolve
+                      rejecter:(RCTPromiseRejectBlock)reject)
+{
+    NSString *number = cardInfo[@"number"];
+    NSString *expirationMonth = cardInfo[@"expirationMonth"];
+    NSString *expirationYear = cardInfo[@"expirationYear"];
+    NSString *cvv = cardInfo[@"cvv"];
+    NSString *postalCode = cardInfo[@"postalCode"];
+
+    if (!number || !expirationMonth || !expirationYear || !cvv || !postalCode) {
+        reject(@"INVALID_CARD_INFO", @"Invalid card info", nil);
+        return;
+    }
+    
+    BTAPIClient *braintreeClient = [[BTAPIClient alloc] initWithAuthorization:clientToken];
+    BTCardClient *cardClient = [[BTCardClient alloc] initWithAPIClient:braintreeClient];
+    BTCard *card = [[BTCard alloc] init];
+    card.number = number;
+    card.expirationMonth = expirationMonth;
+    card.expirationYear = expirationYear;
+    card.cvv = cvv;
+    card.postalCode = postalCode;
+
+    [cardClient tokenizeCard:card
+                  completion:^(BTCardNonce *tokenizedCard, NSError *error) {
+        if (error == nil) {
+            resolve(tokenizedCard.nonce);
+        } else {
+            reject(@"TOKENIZE_ERROR", @"Error tokenizing card.", error);
+        }
+    }];
+}
+
 - (void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller
                        didAuthorizePayment:(PKPayment *)payment
                                 handler:(nonnull void (^)(PKPaymentAuthorizationResult * _Nonnull))completion

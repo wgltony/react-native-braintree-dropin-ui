@@ -5,6 +5,9 @@ import android.app.Activity;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import com.braintreepayments.api.BraintreeClient;
+import com.braintreepayments.api.Card;
+import com.braintreepayments.api.CardClient;
 import com.braintreepayments.api.DropInClient;
 import com.braintreepayments.api.DropInListener;
 import com.braintreepayments.api.DropInPaymentMethod;
@@ -172,6 +175,52 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
         promise.reject("NO_DROP_IN_RESULT", "dropInResult is null");
       } else {
         resolvePayment(dropInResult, promise);
+      }
+    });
+  }
+
+  @ReactMethod
+  public void tokenizeCard(final String clientToken, final ReadableMap cardInfo, final Promise promise) {
+    if (clientToken == null) {
+      promise.reject("NO_CLIENT_TOKEN", "You must provide a client token");
+      return;
+    }
+
+    if (
+      !cardInfo.hasKey("number") ||
+      !cardInfo.hasKey("expirationMonth") ||
+      !cardInfo.hasKey("expirationYear") ||
+      !cardInfo.hasKey("cvv") ||
+      !cardInfo.hasKey("postalCode")
+    ) {
+      promise.reject("INVALID_CARD_INFO", "Invalid card info");
+      return;
+    }
+
+    Activity currentActivity = getCurrentActivity();
+
+    if (currentActivity == null) {
+      promise.reject("NO_ACTIVITY", "There is no current activity");
+      return;
+    }
+
+    BraintreeClient braintreeClient = new BraintreeClient(getCurrentActivity(), clientToken);
+    CardClient cardClient = new CardClient(braintreeClient);
+
+    Card card = new Card();
+    card.setNumber(cardInfo.getString("number"));
+    card.setExpirationMonth(cardInfo.getString("expirationMonth"));
+    card.setExpirationYear(cardInfo.getString("expirationYear"));
+    card.setCvv(cardInfo.getString("cvv"));
+    card.setPostalCode(cardInfo.getString("postalCode"));
+
+    cardClient.tokenize(card, (cardNonce, error) -> {
+      if (error != null) {
+        promise.reject(error.getMessage(), error.getMessage());
+      } else if (cardNonce == null) {
+        promise.reject("NO_CARD_NONCE", "Card nonce is null");
+      } else {
+        promise.resolve(cardNonce.getString());
       }
     });
   }
