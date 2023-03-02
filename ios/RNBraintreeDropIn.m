@@ -245,6 +245,11 @@ RCT_EXPORT_METHOD(tokenizeCard:(NSString*)clientToken
 + (void)resolvePayment:(BTDropInResult* _Nullable)result deviceData:(NSString * _Nonnull)deviceDataCollector resolver:(RCTPromiseResolveBlock _Nonnull)resolve {
     //NSLog(@"result = %@", result);
 
+    if (!result) {
+        resolve(nil);
+        return;
+    }
+
     NSMutableDictionary* jsResult = [NSMutableDictionary new];
 
     //NSLog(@"paymentMethod = %@", result.paymentMethod);

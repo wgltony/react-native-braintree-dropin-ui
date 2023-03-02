@@ -232,7 +232,7 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
     WritableMap jsResult = Arguments.createMap();
 
     if (paymentMethodNonce == null) {
-      promise.reject("NO_PAYMENT_METHOD_NONCE", "Payment method nonce is missing");
+      promise.resolve(null);
       return;
     }
 
