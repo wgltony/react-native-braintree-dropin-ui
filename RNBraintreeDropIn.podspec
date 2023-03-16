@@ -14,9 +14,9 @@ Pod::Spec.new do |s|
   s.source_files  = "ios/**/*.{h,m}"
   s.requires_arc = true
   s.dependency    'React'
-  s.dependency    'Braintree', '5.17.0'
-  s.dependency    'BraintreeDropIn', '9.7.0'
-  s.dependency    'Braintree/DataCollector', '5.17.0'
-  s.dependency    'Braintree/ApplePay', '5.17.0'
-  s.dependency    'Braintree/Venmo', '5.17.0'
+  s.dependency    'Braintree', '5.20.1'
+  s.dependency    'BraintreeDropIn', '9.8.1'
+  s.dependency    'Braintree/DataCollector', '5.20.1'
+  s.dependency    'Braintree/ApplePay', '5.20.1'
+  s.dependency    'Braintree/Venmo', '5.20.1'
 end
