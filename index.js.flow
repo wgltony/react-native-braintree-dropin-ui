@@ -3,6 +3,28 @@ type ShowOptions = {|
   threeDSecure?: {|
     amount: number,
   |},
+  vaultManager?: boolean,
+  cardDisabled?: boolean,
+  googlePay?: boolean,
+  orderTotal?: string,
+  currencyCode?: string,
+  googlePayMerchantId?: string,
+  payPal?: boolean,
+  applePay?: boolean,
+  merchantIdentifier?: string,
+  countryCode?: string,
+  merchantName?: string,
+  darkTheme?: boolean,
+  fontFamily?: string,
+  boldFontFamily?: string,
+|};
+
+type CardInfo = {|
+  number: string,
+  expirationMonth: string,
+  expirationYear: string,
+  cvv: string,
+  postalCode: string,
 |};
 
 type ShowResult = {|
@@ -10,8 +32,11 @@ type ShowResult = {|
   description: string,
   type: string,
   isDefault: boolean,
+  deviceData: string,
 |};
 
 declare module.exports: {
   show: (options: ShowOptions) => Promise<ShowResult>,
+  fetchMostRecentPaymentMethod: (clientToken: string) => Promise<ShowResult>,
+  tokenizeCard: (clientToken: string, cardInfo: CardInfo) => Promise<string>,
 };

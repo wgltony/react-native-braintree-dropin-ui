@@ -26,7 +26,7 @@ npm install react-native-braintree-dropin-ui --save
 
 ## Configurate Payment Method(For ALL RN VERSIONS)
 See Braintree's documentation, [Apple Pay][8], [Google Pay][9], [Paypal][10], [Venmo][11]
-Once you have finished setting up all the configurations, it will shows in the dropin UI.
+Once you have finished setting up all the configurations, it will show in the dropin UI.
 
 
 For React Native versions < 0.60
@@ -38,7 +38,7 @@ react-native link react-native-braintree-dropin-ui
 
 #### iOS specific
 
-You must have a iOS deployment target \>= 9.0.
+You must have a iOS deployment target \>= 12.0.
 
 If you don't have a Podfile or are unsure on how to proceed, see the [CocoaPods][1] usage guide.
 
@@ -58,7 +58,7 @@ pod 'Braintree'
 pod 'BraintreeDropIn'
 
  # comment the next line to disable Apple pay
-pod 'Braintree/Apple-Pay'
+pod 'Braintree/ApplePay'
 
  # comment the next line to disable PayPal
 pod 'Braintree/PayPal'
@@ -84,18 +84,29 @@ The Drop-in will show Apple Pay as a payment option as long as you've completed 
 
 #### PayPal
 
-To enable paypal payments in iOS, you will need to add `setReturnURLScheme` to `launchOptions` of your `AppDelegate.m`
+To enable paypal payments in iOS, you will need to add `setReturnURLScheme` to `launchOptions` of your `AppDelegate.m` / `AppDelegate.mm`
 
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [BTAppSwitch setReturnURLScheme:@"com.your-company-name.your-app-name.payments"]; // ADD THIS LINE 
+    [BTAppContextSwitcher setReturnURLScheme:@"com.your-company-name.your-app-name.payments"]; // ADD THIS LINE 
     return YES;
 }
 ```
 
 #### Android specific
 
-Note: Only complete these steps if using React Native versions < 0.60, autolinking will do these steps automatically.
+Add in your `MainActivity.java`:
+```
+    import tech.power.RNBraintreeDropIn.RNBraintreeDropInModule;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        // ...
+        RNBraintreeDropInModule.initDropInClient(this);
+    }
+```
+
+Note: Only complete the next steps if using React Native versions < 0.60, autolinking will do these steps automatically.
 
 Add in your `app/build.gradle`:
 
@@ -182,7 +193,7 @@ In your `AppDelegate.m`:
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     ...
-    [BTAppSwitch setReturnURLScheme:self.paymentsURLScheme];
+    [BTAppContextSwitcher setReturnURLScheme:self.paymentsURLScheme];
     ...
 }
 
@@ -191,7 +202,7 @@ In your `AppDelegate.m`:
             options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
 
     if ([url.scheme localizedCaseInsensitiveCompare:self.paymentsURLScheme] == NSOrderedSame) {
-        return [BTAppSwitch handleOpenURL:url options:options];
+        return [BTAppContextSwitcher handleOpenURL:url];
     }
 
     return [RCTLinkingManager application:application openURL:url options:options];
@@ -210,13 +221,13 @@ import Braintree
 
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     ...
-    BTAppSwitch.setReturnURLScheme(self.paymentsURLScheme)
+    BTAppContextSwitcher.setReturnURLScheme(self.paymentsURLScheme)
     ...
 }
 
 func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
     if let scheme = url.scheme, scheme.localizedCaseInsensitiveCompare(self.paymentsURLScheme) == .orderedSame {
-        return BTAppSwitch.handleOpen(url, options: options)
+        return BTAppContextSwitcher.handleOpen(url)
     }
     return RCTLinkingManager.application(app, open: url, options: options)
 }
@@ -300,6 +311,36 @@ BraintreeDropIn.show({
 });
 ```
 
+### Fetch more recent payment method
+
+```javascript
+import BraintreeDropIn from 'react-native-braintree-dropin-ui';
+
+BraintreeDropIn.fetchMostRecentPaymentMethod(clientToken)
+.then(result => console.log(result))
+.catch((error) => {
+  // Handle error
+});
+```
+
+### Tokenize card
+
+```javascript
+import BraintreeDropIn from 'react-native-braintree-dropin-ui';
+
+BraintreeDropIn.tokenizeCard(clientToken, {
+  number: '4111111111111111',
+  expirationMonth: '10',
+  expirationYear: '23',
+  cvv: '123',
+  postalCode: '12345',
+})
+.then(cardNonce => console.log(cardNonce))
+.catch((error) => {
+  // Handle error
+});
+```
+
 ### Custom Fonts
 ```
 BraintreeDropIn.show({
@@ -309,20 +350,14 @@ BraintreeDropIn.show({
 })
 ```
 
-### Potential Fix 
-
-This version contains updated BraintreeDropIn 5.+. BraintreeDropIn 5.0.2 contains some security fixes that resolves Play store rejection fix. Read more - 
-
-Unsafe implementation of the HostnameVerifier interface - vulnerability ( https://github.com/braintree/braintree-android-drop-in/issues/208 )
-
 [1]:  http://guides.cocoapods.org/using/using-cocoapods.html
 [2]:  https://github.com/braintree/braintree-ios-drop-in
 [3]:  https://github.com/braintree/braintree-android-drop-in
-[4]:  https://developers.braintreepayments.com/guides/client-sdk/setup/android/v2#browser-switch-setup
+[4]:  https://developers.braintreepayments.com/guides/client-sdk/setup/android/v4#browser-switch-setup
 [5]:  ./index.js.flow
-[6]:  https://developers.braintreepayments.com/guides/apple-pay/configuration/ios/v4
+[6]:  https://developers.braintreepayments.com/guides/apple-pay/configuration/ios/v5
 [7]:  https://articles.braintreepayments.com/guides/payment-methods/apple-pay#compatibility
 [8]:  https://developers.braintreepayments.com/guides/apple-pay/overview
 [9]:  https://developers.braintreepayments.com/guides/google-pay/overview
-[10]: https://developers.braintreepayments.com/guides/paypal/overview/ios/v4
+[10]: https://developers.braintreepayments.com/guides/paypal/overview/ios/v5
 [11]: https://developers.braintreepayments.com/guides/venmo/overview
