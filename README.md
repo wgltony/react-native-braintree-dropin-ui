@@ -25,7 +25,7 @@ npm install react-native-braintree-dropin-ui --save
 ```
 
 ## Configurate Payment Method(For ALL RN VERSIONS)
-See Braintree's documentation, [Apple Pay][8], [Google Pay][9], [Paypal][10], [Venmo][11]
+See Braintree's documentation, [Apple Pay][7], [Google Pay][8], [Paypal][9], [Venmo][10]
 Once you have finished setting up all the configurations, it will show in the dropin UI.
 
 
@@ -80,7 +80,7 @@ pod install
 
 #### Apple Pay
 
-The Drop-in will show Apple Pay as a payment option as long as you've completed the [Apple Pay integration][6] and the customer's [device and card type are supported][7].
+The Drop-in will show Apple Pay as a payment option as long as you've completed the [Apple Pay integration][5] and the customer's [device and card type are supported][6].
 
 #### PayPal
 
@@ -238,14 +238,9 @@ private var paymentsURLScheme: String {
 }
 ```
 
-##### Android
-
-Setup [browser switch][4].
-
-
 ## Usage
 
-For the API, see the [Flow typings][5].
+For the API, see the [Flow typings][4].
 
 ### Basic
 
@@ -353,11 +348,10 @@ BraintreeDropIn.show({
 [1]:  http://guides.cocoapods.org/using/using-cocoapods.html
 [2]:  https://github.com/braintree/braintree-ios-drop-in
 [3]:  https://github.com/braintree/braintree-android-drop-in
-[4]:  https://developers.braintreepayments.com/guides/client-sdk/setup/android/v4#browser-switch-setup
-[5]:  ./index.js.flow
-[6]:  https://developers.braintreepayments.com/guides/apple-pay/configuration/ios/v5
-[7]:  https://articles.braintreepayments.com/guides/payment-methods/apple-pay#compatibility
-[8]:  https://developers.braintreepayments.com/guides/apple-pay/overview
-[9]:  https://developers.braintreepayments.com/guides/google-pay/overview
-[10]: https://developers.braintreepayments.com/guides/paypal/overview/ios/v5
-[11]: https://developers.braintreepayments.com/guides/venmo/overview
+[4]:  ./index.js.flow
+[5]:  https://developers.braintreepayments.com/guides/apple-pay/configuration/ios/v5
+[6]:  https://articles.braintreepayments.com/guides/payment-methods/apple-pay#compatibility
+[7]:  https://developers.braintreepayments.com/guides/apple-pay/overview
+[8]:  https://developers.braintreepayments.com/guides/google-pay/overview
+[9]: https://developers.braintreepayments.com/guides/paypal/overview/ios/v5
+[10]: https://developers.braintreepayments.com/guides/venmo/overview
