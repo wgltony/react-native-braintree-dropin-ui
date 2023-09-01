@@ -15,6 +15,10 @@ IOS
 ```bash
 npm install react-native-braintree-dropin-ui --save
 
+OR
+
+yarn add react-native-braintree-dropin-ui
+
 cd ./ios
 pod install
 ```
@@ -22,6 +26,10 @@ pod install
 Android
 ```bash
 npm install react-native-braintree-dropin-ui --save
+
+OR
+
+yarn add react-native-braintree-dropin-u
 ```
 
 ## Configurate Payment Method(For ALL RN VERSIONS)

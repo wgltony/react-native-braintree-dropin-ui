@@ -88,7 +88,7 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
     }
 
     if(options.hasKey("cardDisabled")) {
-      dropInRequest.setCardDisabled(true);
+      dropInRequest.setCardDisabled(options.getBoolean("cardDisabled"));
     }
 
     if (options.hasKey("threeDSecure")) {
